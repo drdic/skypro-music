@@ -1,6 +1,5 @@
 <script setup>
 import { useTheme } from '@/composables/useTheme.js'
-import { publicPath } from '@/utils/publicPath.js'
 
 const { isLight, toggleTheme } = useTheme()
 </script>
@@ -8,13 +7,11 @@ const { isLight, toggleTheme } = useTheme()
 <template>
   <nav class="main__nav">
     <div class="nav__logo">
-      <img
-        width="250"
-        height="170"
-        class="logo__image"
-        :src="publicPath('img/logo.png')"
-        alt="logo"
-      />
+      <svg class="logo__icon" viewBox="0 0 26 18" aria-hidden="true">
+        <path d="M0 0 L14 9 L0 18 Z" fill="#21bfef" />
+        <path d="M10 0 L24 9 L10 18 Z" fill="#b8e62e" />
+      </svg>
+      <span class="logo__text">skypro.music</span>
     </div>
     <div class="nav__burger">
       <span class="burger__line"></span>
@@ -50,17 +47,27 @@ const { isLight, toggleTheme } = useTheme()
 }
 
 .nav__logo {
-  width: 113.33px;
-  height: 43px;
-  padding: 13px 0 13px 0;
+  display: flex;
+  align-items: center;
+  padding: 13px 0;
   background-color: transparent;
   margin-bottom: 20px;
 }
 
-.logo__image {
-  width: 113.33px;
-  height: 17px;
-  filter: var(--color-logo-filter);
+.logo__icon {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 18px;
+  margin-right: 7px;
+}
+
+.logo__text {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: -0.2px;
+  color: var(--color-text-primary);
+  white-space: nowrap;
 }
 
 .nav__burger {
