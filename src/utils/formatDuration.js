@@ -1,4 +1,3 @@
-// Преобразует длительность трека в секундах в формат "минуты:секунды"
 export function formatDuration(seconds) {
   const minutes = Math.floor(seconds / 60)
   const restSeconds = seconds % 60

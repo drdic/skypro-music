@@ -24,7 +24,6 @@ export default defineConfig([
   ...pluginVue.configs['flat/essential'],
   {
     rules: {
-      // Имена компонентов заданы условиями задания (Track, Playlist, Navbar и т. д.)
       'vue/multi-word-component-names': 'off',
     },
   },
