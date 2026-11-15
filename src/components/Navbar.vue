@@ -1,3 +1,9 @@
+<script setup>
+import { useTheme } from '@/composables/useTheme.js'
+
+const { isLight, toggleTheme } = useTheme()
+</script>
+
 <template>
   <nav class="main__nav">
     <div class="nav__logo">
@@ -18,6 +24,11 @@
         </li>
         <li class="menu__item">
           <a href="#" class="menu__link">Войти</a>
+        </li>
+        <li class="menu__item">
+          <button class="menu__theme" type="button" @click="toggleTheme">
+            {{ isLight ? 'Тёмная тема' : 'Светлая тема' }}
+          </button>
         </li>
       </ul>
     </div>
@@ -42,6 +53,7 @@
 .logo__image {
   width: 113.33px;
   height: 17px;
+  filter: var(--color-logo-filter);
 }
 
 .nav__burger {
@@ -57,7 +69,7 @@
   display: inline-block;
   width: 100%;
   height: 1px;
-  background-color: #d3d3d3;
+  background-color: var(--color-burger);
 }
 
 .nav__menu {
@@ -84,6 +96,27 @@
 
 .menu__link:hover {
   color: var(--color-accent);
+}
+
+.menu__theme {
+  padding: 6px 14px;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition:
+    color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+.menu__theme:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-accent);
 }
 
 @media screen and (max-width: 900px) {

@@ -94,9 +94,7 @@ defineProps({
 
 <style scoped>
 .bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  flex: 0 0 auto;
   width: 100%;
   background: var(--color-bg-player);
 }
@@ -165,19 +163,19 @@ defineProps({
 .player__btnPlaySvg {
   width: 22px;
   height: 20px;
-  fill: #d9d9d9;
+  fill: var(--color-icon-control);
 }
 
 .player__btnNext {
   margin-right: 28px;
-  fill: #a53939;
+  fill: var(--color-icon-accent);
 }
 
 .player__btnNextSvg {
   width: 15px;
   height: 14px;
   fill: inherit;
-  stroke: #d9d9d9;
+  stroke: var(--color-icon-control);
 }
 
 .player__btnRepeat {
@@ -338,8 +336,8 @@ defineProps({
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #1a1a1a;
-  border: 2px solid white;
+  background: var(--color-thumb-bg);
+  border: 2px solid var(--color-thumb-border);
   border-radius: 50%;
   position: relative;
   margin-top: -7px;
@@ -351,7 +349,7 @@ defineProps({
 
 .btnIcon:hover svg {
   fill: transparent;
-  stroke: #acacac;
+  stroke: var(--color-icon-hover);
   cursor: pointer;
 }
 
@@ -371,6 +369,8 @@ defineProps({
 @media screen and (max-width: 900px) {
   .bar {
     position: fixed;
+    bottom: 0;
+    left: 0;
   }
 
   .bar__playerBlock {

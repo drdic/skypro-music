@@ -9,6 +9,7 @@
 
 <style scoped>
 .centerblock__filter {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: row;
   align-items: center;

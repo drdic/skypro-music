@@ -87,7 +87,7 @@ import { tracks } from '@/data/tracks.js'
 <style scoped>
 .wrapper {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   overflow: hidden;
   background-color: var(--color-bg-page);
 }
@@ -96,12 +96,14 @@ import { tracks } from '@/data/tracks.js'
   max-width: 1920px;
   height: 100vh;
   margin: 0 auto;
-  position: relative;
+  display: flex;
+  flex-direction: column;
   background-color: var(--color-bg);
 }
 
 .main {
   flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -110,10 +112,14 @@ import { tracks } from '@/data/tracks.js'
 .centerblock {
   width: auto;
   flex-grow: 3;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   padding: 20px 40px 20px 111px;
 }
 
 .centerblock__search {
+  flex: 0 0 auto;
   width: 100%;
   border-bottom: 1px solid var(--color-border);
   margin-bottom: 51px;
@@ -153,6 +159,7 @@ import { tracks } from '@/data/tracks.js'
 }
 
 .centerblock__h2 {
+  flex: 0 0 auto;
   font-style: normal;
   font-weight: 400;
   font-size: 64px;
@@ -164,6 +171,9 @@ import { tracks } from '@/data/tracks.js'
 
 .main__sidebar {
   max-width: 418px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   padding: 20px 90px 20px 78px;
 }
 
@@ -193,7 +203,9 @@ import { tracks } from '@/data/tracks.js'
 }
 
 .sidebar__block {
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
   padding: 240px 0 0 0;
   display: flex;
   flex-direction: column;
@@ -226,7 +238,7 @@ import { tracks } from '@/data/tracks.js'
 }
 
 .footer {
-  height: 0;
+  display: none;
 }
 
 @media screen and (max-width: 1200px) {
@@ -242,12 +254,18 @@ import { tracks } from '@/data/tracks.js'
 @media screen and (max-width: 900px) {
   .container {
     height: auto;
+    min-height: 100vh;
     padding-bottom: 120px;
+  }
+
+  .main {
+    min-height: auto;
   }
 
   .centerblock {
     padding: 20px 15px 30px;
     flex-basis: 100%;
+    min-height: auto;
   }
 
   .centerblock__h2 {
@@ -259,10 +277,13 @@ import { tracks } from '@/data/tracks.js'
   .main__sidebar {
     max-width: 100%;
     flex-basis: 100%;
+    min-height: auto;
     padding: 0 15px 30px;
   }
 
   .sidebar__block {
+    flex: 0 0 auto;
+    overflow-y: visible;
     padding: 30px 0 0 0;
   }
 
