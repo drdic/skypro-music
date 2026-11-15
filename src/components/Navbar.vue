@@ -1,13 +1,7 @@
 <template>
   <nav class="main__nav">
     <div class="nav__logo">
-      <img
-        width="250"
-        height="170"
-        class="logo__image"
-        src="/img/logo.png"
-        alt="logo"
-      />
+      <img width="250" height="170" class="logo__image" src="/img/logo.png" alt="logo" />
     </div>
     <div class="nav__burger">
       <span class="burger__line"></span>
@@ -33,7 +27,7 @@
 <style scoped>
 .main__nav {
   width: 244px;
-  background-color: #181818;
+  background-color: var(--color-bg);
   padding: 20px 0 20px 36px;
 }
 
@@ -81,17 +75,18 @@
 }
 
 .menu__link {
-  color: #ffffff;
+  color: var(--color-text-primary);
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+  transition: color 0.2s ease-in-out;
 }
 
 .menu__link:hover {
-  color: #ad61ff;
+  color: var(--color-accent);
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .main__nav {
     width: 100%;
     display: flex;

@@ -1,9 +1,9 @@
 <script setup>
-import Navbar from './components/Navbar.vue'
-import FilterControls from './components/FilterControls.vue'
-import Playlist from './components/Playlist.vue'
-import PlayerBar from './components/PlayerBar.vue'
-import { tracks } from './data/tracks.js'
+import Navbar from '@/components/Navbar.vue'
+import FilterControls from '@/components/FilterControls.vue'
+import Playlist from '@/components/Playlist.vue'
+import PlayerBar from '@/components/PlayerBar.vue'
+import { tracks } from '@/data/tracks.js'
 </script>
 
 <template>
@@ -17,12 +17,7 @@ import { tracks } from './data/tracks.js'
             <svg class="search__svg">
               <use href="/img/icon/sprite.svg#icon-search"></use>
             </svg>
-            <input
-              class="search__text"
-              type="search"
-              placeholder="Поиск"
-              name="search"
-            />
+            <input class="search__text" type="search" placeholder="Поиск" name="search" />
           </div>
 
           <h2 class="centerblock__h2">Треки</h2>
@@ -94,7 +89,7 @@ import { tracks } from './data/tracks.js'
   width: 100%;
   min-height: 100%;
   overflow: hidden;
-  background-color: #383838;
+  background-color: var(--color-bg-page);
 }
 
 .container {
@@ -102,7 +97,7 @@ import { tracks } from './data/tracks.js'
   height: 100vh;
   margin: 0 auto;
   position: relative;
-  background-color: #181818;
+  background-color: var(--color-bg);
 }
 
 .main {
@@ -120,7 +115,7 @@ import { tracks } from './data/tracks.js'
 
 .centerblock__search {
   width: 100%;
-  border-bottom: 1px solid #4e4e4e;
+  border-bottom: 1px solid var(--color-border);
   margin-bottom: 51px;
   display: flex;
   flex-direction: row;
@@ -131,7 +126,7 @@ import { tracks } from './data/tracks.js'
   width: 17px;
   height: 17px;
   margin-right: 5px;
-  stroke: #ffffff;
+  stroke: var(--color-text-primary);
   fill: transparent;
 }
 
@@ -144,13 +139,13 @@ import { tracks } from './data/tracks.js'
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   outline: none;
 }
 
 .search__text::placeholder {
   background-color: transparent;
-  color: #ffffff;
+  color: var(--color-text-primary);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -164,7 +159,7 @@ import { tracks } from './data/tracks.js'
   line-height: 72px;
   letter-spacing: -0.8px;
   margin-bottom: 45px;
-  color: #ffffff;
+  color: var(--color-text-primary);
 }
 
 .main__sidebar {
@@ -185,14 +180,14 @@ import { tracks } from './data/tracks.js'
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   margin-right: 16px;
 }
 
 .sidebar__icon {
   width: 43px;
   height: 43px;
-  background-color: #313131;
+  background-color: var(--color-bg-card);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -234,7 +229,7 @@ import { tracks } from './data/tracks.js'
   height: 0;
 }
 
-@media (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
   .centerblock {
     padding: 20px 30px;
   }
@@ -244,7 +239,7 @@ import { tracks } from './data/tracks.js'
   }
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .container {
     height: auto;
     padding-bottom: 120px;

@@ -83,11 +83,7 @@ defineProps({
               </svg>
             </div>
             <div class="volume__progress btn">
-              <input
-                class="volume__progressLine btn"
-                type="range"
-                name="range"
-              />
+              <input class="volume__progressLine btn" type="range" name="range" />
             </div>
           </div>
         </div>
@@ -102,7 +98,7 @@ defineProps({
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(28, 28, 28, 0.5);
+  background: var(--color-bg-player);
 }
 
 .bar__content {
@@ -113,7 +109,7 @@ defineProps({
 .bar__playerProgress {
   width: 100%;
   height: 5px;
-  background: #2e2e2e;
+  background: var(--color-bg-progress);
 }
 
 .bar__playerBlock {
@@ -192,7 +188,7 @@ defineProps({
   width: 18px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .player__btnShuffle {
@@ -204,7 +200,7 @@ defineProps({
   width: 19px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .player__trackPlay {
@@ -225,7 +221,7 @@ defineProps({
 .trackPlay__image {
   width: 51px;
   height: 51px;
-  background-color: #313131;
+  background-color: var(--color-bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,7 +233,7 @@ defineProps({
   width: 18px;
   height: 17px;
   fill: transparent;
-  stroke: #4e4e4e;
+  stroke: var(--color-text-muted);
 }
 
 .trackPlay__author {
@@ -250,7 +246,7 @@ defineProps({
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -264,7 +260,7 @@ defineProps({
   font-weight: 400;
   font-size: 13px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
 }
 
 .trackPlay__likeDis {
@@ -282,7 +278,7 @@ defineProps({
   width: 14px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .trackPlay__dislike {
@@ -294,7 +290,7 @@ defineProps({
   width: 14.34px;
   height: 13px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .volume__content {
@@ -326,7 +322,7 @@ defineProps({
   width: 100%;
   height: 2px;
   appearance: none;
-  background: #797979;
+  background: var(--color-volume);
   border-radius: 5px;
   outline: none;
   cursor: pointer;
@@ -355,18 +351,18 @@ defineProps({
 
 .btnIcon:active svg {
   fill: transparent;
-  stroke: #ffffff;
+  stroke: var(--color-text-primary);
   cursor: pointer;
 }
 
 .btnIcon:active .trackPlay__likeSvg,
 .btnIcon:active .trackPlay__dislikeSvg {
-  fill: #696969;
-  stroke: #ffffff;
+  fill: var(--color-text-secondary);
+  stroke: var(--color-text-primary);
   cursor: pointer;
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .bar {
     position: fixed;
   }

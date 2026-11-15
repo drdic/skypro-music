@@ -1,5 +1,5 @@
 <script setup>
-import { formatDuration } from '../utils/formatDuration.js'
+import { formatDuration } from '@/utils/formatDuration.js'
 
 defineProps({
   track: {
@@ -21,7 +21,6 @@ defineProps({
         <div class="track__title-text">
           <a class="track__titleLink" href="#">
             {{ track.name }}
-            <span class="track__titleSpan"></span>
           </a>
         </div>
       </div>
@@ -35,9 +34,7 @@ defineProps({
         <svg class="track__timeSvg">
           <use href="/img/icon/sprite.svg#icon-like"></use>
         </svg>
-        <span class="track__timeText">{{
-          formatDuration(track.duration_in_seconds)
-        }}</span>
+        <span class="track__timeText">{{ formatDuration(track.duration_in_seconds) }}</span>
       </div>
     </div>
   </div>
@@ -68,7 +65,7 @@ defineProps({
   width: 51px;
   height: 51px;
   padding: 16px;
-  background: #313131;
+  background: var(--color-bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,7 +76,7 @@ defineProps({
   width: 18px;
   height: 17px;
   fill: transparent;
-  stroke: #4e4e4e;
+  stroke: var(--color-text-muted);
 }
 
 .track__titleLink {
@@ -87,15 +84,7 @@ defineProps({
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
-}
-
-.track__titleSpan {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #4e4e4e;
+  color: var(--color-text-primary);
 }
 
 .track__author {
@@ -109,7 +98,7 @@ defineProps({
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   text-align: left;
 }
 
@@ -122,7 +111,7 @@ defineProps({
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #696969;
+  color: var(--color-text-secondary);
 }
 
 .track__time {
@@ -135,7 +124,7 @@ defineProps({
   height: 12px;
   margin-right: 17px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .track__timeText {
@@ -144,10 +133,10 @@ defineProps({
   font-size: 16px;
   line-height: 24px;
   text-align: right;
-  color: #696969;
+  color: var(--color-text-secondary);
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .playlist__track {
     flex-wrap: wrap;
     gap: 5px;

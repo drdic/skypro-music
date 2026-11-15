@@ -1,5 +1,5 @@
 <script setup>
-import Track from './Track.vue'
+import Track from '@/components/Track.vue'
 
 defineProps({
   tracks: {
@@ -53,7 +53,7 @@ defineProps({
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 2px;
-  color: #696969;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
 }
 
@@ -61,7 +61,7 @@ defineProps({
   width: 12px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .col01 {
@@ -81,7 +81,7 @@ defineProps({
   text-align: end;
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .col01 {
     width: 45%;
   }

@@ -1,0 +1,17 @@
+:root {
+  --color-bg-page: #383838;
+  --color-bg: #181818;
+  --color-bg-card: #313131;
+  --color-bg-player: rgba(28, 28, 28, 0.5);
+  --color-bg-progress: #2e2e2e;
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #696969;
+  --color-text-muted: #4e4e4e;
+
+  --color-border: #4e4e4e;
+  --color-volume: #797979;
+
+  --color-accent: #ad61ff;
+  --color-accent-hover: #d9b6ff;
+}
