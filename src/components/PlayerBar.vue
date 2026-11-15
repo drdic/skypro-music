@@ -328,6 +328,12 @@ defineProps({
   cursor: pointer;
 }
 
+.volume__progressLine::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--color-volume);
+  border-radius: 5px;
+}
+
 .volume__progressLine::-webkit-slider-thumb {
   appearance: none;
   width: 16px;
