@@ -1,5 +1,6 @@
 <script setup>
 import { formatDuration } from '@/utils/formatDuration.js'
+import { publicPath } from '@/utils/publicPath.js'
 
 defineProps({
   track: {
@@ -15,7 +16,7 @@ defineProps({
       <div class="track__title">
         <div class="track__titleImage">
           <svg class="track__titleSvg">
-            <use href="/img/icon/sprite.svg#icon-note"></use>
+            <use :href="publicPath('img/icon/sprite.svg#icon-note')"></use>
           </svg>
         </div>
         <div class="track__title-text">
@@ -32,7 +33,7 @@ defineProps({
       </div>
       <div class="track__time">
         <svg class="track__timeSvg">
-          <use href="/img/icon/sprite.svg#icon-like"></use>
+          <use :href="publicPath('img/icon/sprite.svg#icon-like')"></use>
         </svg>
         <span class="track__timeText">{{ formatDuration(track.duration_in_seconds) }}</span>
       </div>

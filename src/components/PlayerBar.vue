@@ -1,4 +1,6 @@
 <script setup>
+import { publicPath } from '@/utils/publicPath.js'
+
 defineProps({
   track: {
     type: Object,
@@ -16,27 +18,27 @@ defineProps({
           <div class="player__controls">
             <div class="player__btnPrev">
               <svg class="player__btnPrevSvg">
-                <use href="/img/icon/sprite.svg#icon-prev"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-prev')"></use>
               </svg>
             </div>
             <div class="player__btnPlay btn">
               <svg class="player__btnPlaySvg">
-                <use href="/img/icon/sprite.svg#icon-play"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-play')"></use>
               </svg>
             </div>
             <div class="player__btnNext">
               <svg class="player__btnNextSvg">
-                <use href="/img/icon/sprite.svg#icon-next"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-next')"></use>
               </svg>
             </div>
             <div class="player__btnRepeat btnIcon">
               <svg class="player__btnRepeatSvg">
-                <use href="/img/icon/sprite.svg#icon-repeat"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-repeat')"></use>
               </svg>
             </div>
             <div class="player__btnShuffle btnIcon">
               <svg class="player__btnShuffleSvg">
-                <use href="/img/icon/sprite.svg#icon-shuffle"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-shuffle')"></use>
               </svg>
             </div>
           </div>
@@ -45,7 +47,7 @@ defineProps({
             <div class="trackPlay__contain">
               <div class="trackPlay__image">
                 <svg class="trackPlay__svg">
-                  <use href="/img/icon/sprite.svg#icon-note"></use>
+                  <use :href="publicPath('img/icon/sprite.svg#icon-note')"></use>
                 </svg>
               </div>
               <div class="trackPlay__author">
@@ -63,12 +65,12 @@ defineProps({
             <div class="trackPlay__likeDis">
               <div class="trackPlay__like btnIcon">
                 <svg class="trackPlay__likeSvg">
-                  <use href="/img/icon/sprite.svg#icon-like"></use>
+                  <use :href="publicPath('img/icon/sprite.svg#icon-like')"></use>
                 </svg>
               </div>
               <div class="trackPlay__dislike btnIcon">
                 <svg class="trackPlay__dislikeSvg">
-                  <use href="/img/icon/sprite.svg#icon-dislike"></use>
+                  <use :href="publicPath('img/icon/sprite.svg#icon-dislike')"></use>
                 </svg>
               </div>
             </div>
@@ -79,7 +81,7 @@ defineProps({
           <div class="volume__content">
             <div class="volume__image">
               <svg class="volume__svg">
-                <use href="/img/icon/sprite.svg#icon-volume"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-volume')"></use>
               </svg>
             </div>
             <div class="volume__progress btn">

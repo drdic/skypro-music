@@ -4,6 +4,7 @@ import FilterControls from '@/components/FilterControls.vue'
 import Playlist from '@/components/Playlist.vue'
 import PlayerBar from '@/components/PlayerBar.vue'
 import { tracks } from '@/data/tracks.js'
+import { publicPath } from '@/utils/publicPath.js'
 </script>
 
 <template>
@@ -15,7 +16,7 @@ import { tracks } from '@/data/tracks.js'
         <div class="centerblock">
           <div class="centerblock__search">
             <svg class="search__svg">
-              <use href="/img/icon/sprite.svg#icon-search"></use>
+              <use :href="publicPath('img/icon/sprite.svg#icon-search')"></use>
             </svg>
             <input class="search__text" type="search" placeholder="Поиск" name="search" />
           </div>
@@ -32,7 +33,7 @@ import { tracks } from '@/data/tracks.js'
             <p class="sidebar__personalName">Sergey.Ivanov</p>
             <div class="sidebar__icon">
               <svg>
-                <use href="/img/icon/sprite.svg#logout"></use>
+                <use :href="publicPath('img/icon/sprite.svg#logout')"></use>
               </svg>
             </div>
           </div>
@@ -43,7 +44,7 @@ import { tracks } from '@/data/tracks.js'
                 <a class="sidebar__link" href="#">
                   <img
                     class="sidebar__img"
-                    src="/img/playlist01.png"
+                    :src="publicPath('img/playlist01.png')"
                     alt="day's playlist"
                     width="250"
                     height="170"
@@ -54,7 +55,7 @@ import { tracks } from '@/data/tracks.js'
                 <a class="sidebar__link" href="#">
                   <img
                     class="sidebar__img"
-                    src="/img/playlist02.png"
+                    :src="publicPath('img/playlist02.png')"
                     alt="day's playlist"
                     width="250"
                     height="170"
@@ -65,7 +66,7 @@ import { tracks } from '@/data/tracks.js'
                 <a class="sidebar__link" href="#">
                   <img
                     class="sidebar__img"
-                    src="/img/playlist03.png"
+                    :src="publicPath('img/playlist03.png')"
                     alt="day's playlist"
                     width="250"
                     height="170"

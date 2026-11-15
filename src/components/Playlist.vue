@@ -1,5 +1,6 @@
 <script setup>
 import Track from '@/components/Track.vue'
+import { publicPath } from '@/utils/publicPath.js'
 
 defineProps({
   tracks: {
@@ -17,7 +18,7 @@ defineProps({
       <div class="playlistTitle__col col03">Альбом</div>
       <div class="playlistTitle__col col04">
         <svg class="playlistTitle__svg">
-          <use href="/img/icon/sprite.svg#icon-watch"></use>
+          <use :href="publicPath('img/icon/sprite.svg#icon-watch')"></use>
         </svg>
       </div>
     </div>

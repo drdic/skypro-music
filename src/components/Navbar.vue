@@ -1,5 +1,6 @@
 <script setup>
 import { useTheme } from '@/composables/useTheme.js'
+import { publicPath } from '@/utils/publicPath.js'
 
 const { isLight, toggleTheme } = useTheme()
 </script>
@@ -7,7 +8,13 @@ const { isLight, toggleTheme } = useTheme()
 <template>
   <nav class="main__nav">
     <div class="nav__logo">
-      <img width="250" height="170" class="logo__image" src="/img/logo.png" alt="logo" />
+      <img
+        width="250"
+        height="170"
+        class="logo__image"
+        :src="publicPath('img/logo.png')"
+        alt="logo"
+      />
     </div>
     <div class="nav__burger">
       <span class="burger__line"></span>

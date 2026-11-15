@@ -7,6 +7,8 @@
 - Vue 3 (`<script setup>`)
 - Vite
 
+Демо: https://drdic.github.io/skypro-music/
+
 ## Запуск
 
 ```bash
@@ -25,6 +27,7 @@ npm run build
 ```bash
 npm run lint     # проверка и автоисправление ESLint
 npm run format   # форматирование Prettier
+npm run deploy   # сборка и публикация на GitHub Pages
 ```
 
 ## Структура
@@ -49,7 +52,8 @@ src/
   data/
     tracks.js     # статичный файл треков (замена API)
   utils/
-    formatDuration.js
+    formatDuration.js   # форматирование длительности трека
+    publicPath.js       # пути к файлам из public с учётом base
   App.vue
   main.js
 ```
@@ -62,6 +66,12 @@ src/
 - Статические файлы (изображения, иконки, шрифты, аудио) перенесены в `public`.
 - Создан статичный файл с треками `src/data/tracks.js`, структура объектов соответствует требованиям.
 - Шрифт Montserrat подключён локально из `public/fonts`.
+
+## Публикация
+
+Проект собирается с `base: '/skypro-music/'`, потому что на GitHub Pages страница открывается по адресу https://drdic.github.io/skypro-music/. Пути к файлам из `public` строятся через `src/utils/publicPath.js`, поэтому картинки, шрифты и аудио работают и локально, и на Pages.
+
+Публикация выполняется командой `npm run deploy`: она собирает проект в `dist` и выкладывает результат в ветку `gh-pages` с помощью пакета `gh-pages`.
 
 ## Темы оформления
 
