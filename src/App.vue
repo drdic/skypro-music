@@ -104,16 +104,15 @@ import { publicPath } from '@/utils/publicPath.js'
 .main {
   flex: 1 1 auto;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 .centerblock {
-  width: auto;
-  flex-grow: 3;
+  flex: 1 1 auto;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 20px 40px 20px 111px;
+  padding: 20px 40px 100px 111px;
 }
 
 .centerblock__search {
@@ -168,6 +167,8 @@ import { publicPath } from '@/utils/publicPath.js'
 }
 
 .main__sidebar {
+  flex: 0 0 auto;
+  width: 418px;
   max-width: 418px;
   display: flex;
   flex-direction: column;
@@ -238,7 +239,7 @@ import { publicPath } from '@/utils/publicPath.js'
 
 @media screen and (max-width: 1200px) {
   .centerblock {
-    padding: 20px 30px;
+    padding: 20px 30px 100px;
   }
 
   .main__sidebar {
@@ -249,6 +250,10 @@ import { publicPath } from '@/utils/publicPath.js'
 @media screen and (max-width: 900px) {
   .container {
     padding-bottom: 120px;
+  }
+
+  .main {
+    flex-wrap: wrap;
   }
 
   .centerblock {
@@ -263,6 +268,7 @@ import { publicPath } from '@/utils/publicPath.js'
   }
 
   .main__sidebar {
+    width: 100%;
     max-width: 100%;
     flex-basis: 100%;
     padding: 0 15px 30px;

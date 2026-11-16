@@ -39,6 +39,7 @@ defineProps({
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   margin-bottom: 24px;
 }
 
@@ -65,36 +66,41 @@ defineProps({
 }
 
 .col01 {
-  width: 447px;
+  flex: 1 1 40%;
+  min-width: 0;
 }
 
 .col02 {
-  width: 321px;
+  flex: 0 1 29%;
+  min-width: 0;
 }
 
 .col03 {
-  width: 245px;
+  flex: 0 1 22%;
+  min-width: 0;
 }
 
 .col04 {
+  flex: 0 0 auto;
   width: 60px;
   text-align: end;
 }
 
 @media screen and (max-width: 900px) {
   .col01 {
-    width: 45%;
+    flex: 1 1 45%;
   }
 
   .col02 {
-    width: 30%;
+    flex: 0 1 30%;
   }
 
   .col03 {
-    width: 20%;
+    flex: 0 1 20%;
   }
 
   .col04 {
+    flex: 0 0 auto;
     width: 5%;
   }
 }

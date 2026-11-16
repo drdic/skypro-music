@@ -41,6 +41,7 @@ const { isLight, toggleTheme } = useTheme()
 
 <style scoped>
 .main__nav {
+  flex: 0 0 244px;
   width: 244px;
   background-color: var(--color-bg);
   padding: 20px 0 20px 36px;
@@ -135,6 +136,7 @@ const { isLight, toggleTheme } = useTheme()
 
 @media screen and (max-width: 900px) {
   .main__nav {
+    flex: 0 0 100%;
     width: 100%;
     display: flex;
     align-items: center;
