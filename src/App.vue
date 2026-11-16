@@ -89,13 +89,12 @@ import { publicPath } from '@/utils/publicPath.js'
 .wrapper {
   width: 100%;
   min-height: 100vh;
-  overflow: hidden;
   background-color: var(--color-bg-page);
 }
 
 .container {
   max-width: 1920px;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -104,7 +103,6 @@ import { publicPath } from '@/utils/publicPath.js'
 
 .main {
   flex: 1 1 auto;
-  min-height: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -113,7 +111,6 @@ import { publicPath } from '@/utils/publicPath.js'
 .centerblock {
   width: auto;
   flex-grow: 3;
-  min-height: 0;
   display: flex;
   flex-direction: column;
   padding: 20px 40px 20px 111px;
@@ -172,7 +169,6 @@ import { publicPath } from '@/utils/publicPath.js'
 
 .main__sidebar {
   max-width: 418px;
-  min-height: 0;
   display: flex;
   flex-direction: column;
   padding: 20px 90px 20px 78px;
@@ -205,8 +201,6 @@ import { publicPath } from '@/utils/publicPath.js'
 
 .sidebar__block {
   flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
   padding: 240px 0 0 0;
   display: flex;
   flex-direction: column;
@@ -254,19 +248,12 @@ import { publicPath } from '@/utils/publicPath.js'
 
 @media screen and (max-width: 900px) {
   .container {
-    height: auto;
-    min-height: 100vh;
     padding-bottom: 120px;
-  }
-
-  .main {
-    min-height: auto;
   }
 
   .centerblock {
     padding: 20px 15px 30px;
     flex-basis: 100%;
-    min-height: auto;
   }
 
   .centerblock__h2 {
@@ -278,13 +265,10 @@ import { publicPath } from '@/utils/publicPath.js'
   .main__sidebar {
     max-width: 100%;
     flex-basis: 100%;
-    min-height: auto;
     padding: 0 15px 30px;
   }
 
   .sidebar__block {
-    flex: 0 0 auto;
-    overflow-y: visible;
     padding: 30px 0 0 0;
   }
 

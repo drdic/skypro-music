@@ -96,9 +96,13 @@ defineProps({
 
 <style scoped>
 .bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
   flex: 0 0 auto;
   width: 100%;
   background: var(--color-bg-player);
+  backdrop-filter: blur(10px);
 }
 
 .bar__content {

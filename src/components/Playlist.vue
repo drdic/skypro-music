@@ -30,8 +30,6 @@ defineProps({
 
 <style scoped>
 .centerblock__content {
-  flex: 1 1 auto;
-  min-height: 0;
   display: flex;
   flex-direction: column;
 }
@@ -45,11 +43,8 @@ defineProps({
 }
 
 .content__playlist {
-  flex: 1 1 auto;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
 }
 
 .playlistTitle__col {
@@ -87,17 +82,6 @@ defineProps({
 }
 
 @media screen and (max-width: 900px) {
-  .centerblock__content {
-    flex: 0 0 auto;
-    min-height: auto;
-  }
-
-  .content__playlist {
-    flex: 0 0 auto;
-    min-height: auto;
-    overflow-y: visible;
-  }
-
   .col01 {
     width: 45%;
   }
