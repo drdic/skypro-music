@@ -18,6 +18,7 @@ export default defineConfig([
         ...globals.browser,
         ...globals.node,
         useTheme: 'readonly',
+        __APP_BASE_URL__: 'readonly',
       },
     },
   },
