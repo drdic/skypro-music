@@ -1,9 +1,10 @@
 <script setup>
-import Navbar from './components/Navbar.vue'
-import FilterControls from './components/FilterControls.vue'
-import Playlist from './components/Playlist.vue'
-import PlayerBar from './components/PlayerBar.vue'
-import { tracks } from './data/tracks.js'
+import Navbar from '@/components/Navbar.vue'
+import FilterControls from '@/components/FilterControls.vue'
+import Playlist from '@/components/Playlist.vue'
+import PlayerBar from '@/components/PlayerBar.vue'
+import { tracks } from '@/data/tracks.js'
+import { publicPath } from '@/utils/publicPath.js'
 </script>
 
 <template>
@@ -15,14 +16,9 @@ import { tracks } from './data/tracks.js'
         <div class="centerblock">
           <div class="centerblock__search">
             <svg class="search__svg">
-              <use href="/img/icon/sprite.svg#icon-search"></use>
+              <use :href="publicPath('img/icon/sprite.svg#icon-search')"></use>
             </svg>
-            <input
-              class="search__text"
-              type="search"
-              placeholder="Поиск"
-              name="search"
-            />
+            <input class="search__text" type="search" placeholder="Поиск" name="search" />
           </div>
 
           <h2 class="centerblock__h2">Треки</h2>
@@ -37,7 +33,7 @@ import { tracks } from './data/tracks.js'
             <p class="sidebar__personalName">Sergey.Ivanov</p>
             <div class="sidebar__icon">
               <svg>
-                <use href="/img/icon/sprite.svg#logout"></use>
+                <use :href="publicPath('img/icon/sprite.svg#logout')"></use>
               </svg>
             </div>
           </div>
@@ -48,7 +44,7 @@ import { tracks } from './data/tracks.js'
                 <a class="sidebar__link" href="#">
                   <img
                     class="sidebar__img"
-                    src="/img/playlist01.png"
+                    :src="publicPath('img/playlist01.png')"
                     alt="day's playlist"
                     width="250"
                     height="170"
@@ -59,7 +55,7 @@ import { tracks } from './data/tracks.js'
                 <a class="sidebar__link" href="#">
                   <img
                     class="sidebar__img"
-                    src="/img/playlist02.png"
+                    :src="publicPath('img/playlist02.png')"
                     alt="day's playlist"
                     width="250"
                     height="170"
@@ -70,7 +66,7 @@ import { tracks } from './data/tracks.js'
                 <a class="sidebar__link" href="#">
                   <img
                     class="sidebar__img"
-                    src="/img/playlist03.png"
+                    :src="publicPath('img/playlist03.png')"
                     alt="day's playlist"
                     width="250"
                     height="170"
@@ -92,35 +88,37 @@ import { tracks } from './data/tracks.js'
 <style scoped>
 .wrapper {
   width: 100%;
-  min-height: 100%;
-  overflow: hidden;
-  background-color: #383838;
+  min-height: 100vh;
+  background-color: var(--color-bg-page);
 }
 
 .container {
   max-width: 1920px;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
-  position: relative;
-  background-color: #181818;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
 }
 
 .main {
   flex: 1 1 auto;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 .centerblock {
-  width: auto;
-  flex-grow: 3;
-  padding: 20px 40px 20px 111px;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px 100px 111px;
 }
 
 .centerblock__search {
+  flex: 0 0 auto;
   width: 100%;
-  border-bottom: 1px solid #4e4e4e;
+  border-bottom: 1px solid var(--color-border);
   margin-bottom: 51px;
   display: flex;
   flex-direction: row;
@@ -131,7 +129,7 @@ import { tracks } from './data/tracks.js'
   width: 17px;
   height: 17px;
   margin-right: 5px;
-  stroke: #ffffff;
+  stroke: var(--color-text-primary);
   fill: transparent;
 }
 
@@ -144,13 +142,13 @@ import { tracks } from './data/tracks.js'
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   outline: none;
 }
 
 .search__text::placeholder {
   background-color: transparent;
-  color: #ffffff;
+  color: var(--color-text-primary);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -158,17 +156,22 @@ import { tracks } from './data/tracks.js'
 }
 
 .centerblock__h2 {
+  flex: 0 0 auto;
   font-style: normal;
   font-weight: 400;
   font-size: 64px;
   line-height: 72px;
   letter-spacing: -0.8px;
   margin-bottom: 45px;
-  color: #ffffff;
+  color: var(--color-text-primary);
 }
 
 .main__sidebar {
+  flex: 0 0 auto;
+  width: 418px;
   max-width: 418px;
+  display: flex;
+  flex-direction: column;
   padding: 20px 90px 20px 78px;
 }
 
@@ -185,20 +188,20 @@ import { tracks } from './data/tracks.js'
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   margin-right: 16px;
 }
 
 .sidebar__icon {
   width: 43px;
   height: 43px;
-  background-color: #313131;
+  background-color: var(--color-bg-card);
   border-radius: 50%;
   cursor: pointer;
 }
 
 .sidebar__block {
-  height: 100%;
+  flex: 1 1 auto;
   padding: 240px 0 0 0;
   display: flex;
   flex-direction: column;
@@ -231,12 +234,12 @@ import { tracks } from './data/tracks.js'
 }
 
 .footer {
-  height: 0;
+  display: none;
 }
 
-@media (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
   .centerblock {
-    padding: 20px 30px;
+    padding: 20px 30px 100px;
   }
 
   .main__sidebar {
@@ -244,10 +247,13 @@ import { tracks } from './data/tracks.js'
   }
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .container {
-    height: auto;
     padding-bottom: 120px;
+  }
+
+  .main {
+    flex-wrap: wrap;
   }
 
   .centerblock {
@@ -262,6 +268,7 @@ import { tracks } from './data/tracks.js'
   }
 
   .main__sidebar {
+    width: 100%;
     max-width: 100%;
     flex-basis: 100%;
     padding: 0 15px 30px;

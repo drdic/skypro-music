@@ -7,6 +7,8 @@
 - Vue 3 (`<script setup>`)
 - Vite
 
+Демо: https://drdic.github.io/skypro-music/
+
 ## Запуск
 
 ```bash
@@ -20,33 +22,82 @@ npm run dev
 npm run build
 ```
 
+Дополнительные команды:
+
+```bash
+npm run lint     # проверка и автоисправление ESLint
+npm run format   # форматирование Prettier
+npm run deploy   # сборка и публикация на GitHub Pages
+```
+
 ## Структура
 
 ```
 public/
+  audio/         # аудиофайлы треков (mp3)
   img/           # логотипы, обложки плейлистов, svg-иконки (sprite.svg)
   fonts/         # локальный шрифт Montserrat (woff2) и montserrat.css
 src/
+  assets/
+    main.css        # базовый сброс стилей и подключение шрифта
+    theme.css       # переменные цветов для тёмной и светлой темы
   components/
     Track.vue           # карточка трека
     Playlist.vue        # список треков с заголовком таблицы
     FilterControls.vue  # блок фильтров
-    Navbar.vue          # боковая навигация
+    Navbar.vue          # боковая навигация и переключатель темы
     PlayerBar.vue       # плеер внизу экрана
+  composables/
+    useTheme.js   # переключение тёмной и светлой темы
   data/
     tracks.js     # статичный файл треков (замена API)
   utils/
-    formatDuration.js
+    formatDuration.js   # форматирование длительности трека
+    publicPath.js       # пути к файлам из public с учётом base
   App.vue
   main.js
-  style.css
 ```
 
 ## Домашнее задание hw-1
 
 - Проект инициализирован с помощью Vite.
 - Главная страница декомпозирована на компоненты `Track`, `Playlist`, `FilterControls`, `Navbar`, `PlayerBar`.
-- Стили инкапсулированы через `scoped`, глобальными остались только базовые сбросы и подключение шрифта.
-- Статические файлы (изображения, иконки, шрифты) перенесены в `public`.
+- Стили инкапсулированы через `scoped`, глобальными остались только базовый сброс стилей и переменные цветов.
+- Статические файлы (изображения, иконки, шрифты, аудио) перенесены в `public`.
 - Создан статичный файл с треками `src/data/tracks.js`, структура объектов соответствует требованиям.
 - Шрифт Montserrat подключён локально из `public/fonts`.
+
+## Публикация
+
+Проект собирается с `base: '/skypro-music/'`, потому что на GitHub Pages страница открывается по адресу https://drdic.github.io/skypro-music/. Пути к файлам из `public` строятся через `src/utils/publicPath.js`, поэтому картинки, шрифты и аудио работают и локально, и на Pages.
+
+Публикация выполняется командой `npm run deploy`: она собирает проект в `dist` и выкладывает результат в ветку `gh-pages` с помощью пакета `gh-pages`.
+
+## Темы оформления
+
+По умолчанию включена тёмная тема, как в макете. Кнопка «Светлая тема» в навигации переключает оформление на светлое, выбор сохраняется в `localStorage` и применяется при следующем открытии страницы. Все цвета вынесены в переменные в `src/assets/theme.css`, светлая палитра задаётся селектором `:root[data-theme='light']`.
+
+## Источники и лицензии треков
+
+Аудиофайлы в `public/audio` взяты из материалов курса Skypro (исходные ссылки в учебном файле `data.ts` вели на сервер курса) и используются исключительно в образовательных целях в рамках выполнения домашнего задания.
+
+Права на музыку принадлежат авторам. Большая часть треков распространяется по свободным лицензиям (Creative Commons BY и royalty-free библиотеки):
+
+| Трек | Автор | Лицензия / источник |
+| --- | --- | --- |
+| Chase | Alexander Nakarada | Free / CC BY — библиотеки royalty-free музыки |
+| Open Sea epic | Frank Schroter | Free / royalty-free библиотека |
+| Sneaky Snitch | Kevin MacLeod | CC BY — incompetech.com |
+| Secret Garden | Mixkit | Mixkit License (бесплатное использование в проектах) |
+| A journey of successfull winners | Musiclfiles | Free / royalty-free библиотека |
+| Epic Heroic Conquest | Musiclfiles | Free / royalty-free библиотека |
+| The March OF The Final Battle | Musiclfiles | Free / royalty-free библиотека |
+| True Summer | Musiclfiles | Free / royalty-free библиотека |
+| Background Sensible | Waltz Piano | Free / royalty-free библиотека |
+| Cinematic | Winniethemoog | Free / royalty-free библиотека |
+
+При использовании музыки за пределами учебного проекта необходимо самостоятельно уточнить условия конкретной лицензии и указать авторов.
+
+## Макет
+
+Вёрстка выполнена по макету Figma и готовой разметке, предоставленным в материалах курса.

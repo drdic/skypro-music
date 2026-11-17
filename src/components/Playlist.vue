@@ -1,5 +1,6 @@
 <script setup>
-import Track from './Track.vue'
+import Track from '@/components/Track.vue'
+import { publicPath } from '@/utils/publicPath.js'
 
 defineProps({
   tracks: {
@@ -17,7 +18,7 @@ defineProps({
       <div class="playlistTitle__col col03">Альбом</div>
       <div class="playlistTitle__col col04">
         <svg class="playlistTitle__svg">
-          <use href="/img/icon/sprite.svg#icon-watch"></use>
+          <use :href="publicPath('img/icon/sprite.svg#icon-watch')"></use>
         </svg>
       </div>
     </div>
@@ -38,13 +39,13 @@ defineProps({
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   margin-bottom: 24px;
 }
 
 .content__playlist {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
 }
 
 .playlistTitle__col {
@@ -53,7 +54,7 @@ defineProps({
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 2px;
-  color: #696969;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
 }
 
@@ -61,40 +62,45 @@ defineProps({
   width: 12px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .col01 {
-  width: 447px;
+  flex: 1 1 40%;
+  min-width: 0;
 }
 
 .col02 {
-  width: 321px;
+  flex: 0 1 29%;
+  min-width: 0;
 }
 
 .col03 {
-  width: 245px;
+  flex: 0 1 22%;
+  min-width: 0;
 }
 
 .col04 {
+  flex: 0 0 auto;
   width: 60px;
   text-align: end;
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .col01 {
-    width: 45%;
+    flex: 1 1 45%;
   }
 
   .col02 {
-    width: 30%;
+    flex: 0 1 30%;
   }
 
   .col03 {
-    width: 20%;
+    flex: 0 1 20%;
   }
 
   .col04 {
+    flex: 0 0 auto;
     width: 5%;
   }
 }

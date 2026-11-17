@@ -1,4 +1,5 @@
-// Статичный файл с треками — временная замена API
+import { publicPath } from '@/utils/publicPath.js'
+
 export const tracks = [
   {
     _id: 8,
@@ -9,8 +10,7 @@ export const tracks = [
     duration_in_seconds: 205,
     album: 'Chase',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Alexander_Nakarada_-_Chase.mp3',
+    track_file: publicPath('audio/Alexander_Nakarada_-_Chase.mp3'),
     stared_user: [],
   },
   {
@@ -22,8 +22,7 @@ export const tracks = [
     duration_in_seconds: 165,
     album: 'Open Sea epic',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Frank_Schroter_-_Open_Sea_epic.mp3',
+    track_file: publicPath('audio/Frank_Schroter_-_Open_Sea_epic.mp3'),
     stared_user: [],
   },
   {
@@ -35,8 +34,7 @@ export const tracks = [
     duration_in_seconds: 305,
     album: 'Sneaky Snitch',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Kevin_Macleod_-_Sneaky_Snitch.mp3',
+    track_file: publicPath('audio/Kevin_Macleod_-_Sneaky_Snitch.mp3'),
     stared_user: [],
   },
   {
@@ -48,8 +46,7 @@ export const tracks = [
     duration_in_seconds: 324,
     album: 'Secret Garden',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Mixkit_-_Secret_Garden.mp3',
+    track_file: publicPath('audio/Mixkit_-_Secret_Garden.mp3'),
     stared_user: [],
   },
   {
@@ -61,8 +58,7 @@ export const tracks = [
     duration_in_seconds: 255,
     album: '-',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Musiclfiles_-_A_Journey_For_Successful_Winners.mp3',
+    track_file: publicPath('audio/Musiclfiles_-_A_Journey_For_Successful_Winners.mp3'),
     stared_user: [],
   },
   {
@@ -74,8 +70,7 @@ export const tracks = [
     duration_in_seconds: 200,
     album: 'Epic Heroic Conquest',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Musiclfiles_-_Epic_Heroic_Conquest.mp3',
+    track_file: publicPath('audio/Musiclfiles_-_Epic_Heroic_Conquest.mp3'),
     stared_user: [],
   },
   {
@@ -87,8 +82,7 @@ export const tracks = [
     duration_in_seconds: 206,
     album: 'The March OF The Final Battle',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/musiclfiles_-_The_March_Of_The_Final_Battle.mp3',
+    track_file: publicPath('audio/musiclfiles_-_The_March_Of_The_Final_Battle.mp3'),
     stared_user: [],
   },
   {
@@ -100,8 +94,7 @@ export const tracks = [
     duration_in_seconds: 253,
     album: 'True Summer',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Musiclfiles_-_True_Summer.mp3',
+    track_file: publicPath('audio/Musiclfiles_-_True_Summer.mp3'),
     stared_user: [],
   },
   {
@@ -113,8 +106,7 @@ export const tracks = [
     duration_in_seconds: 135,
     album: 'Background Sensible',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Waltz_Piano_-_Background_Sensible.mp3',
+    track_file: publicPath('audio/Waltz_Piano_-_Background_Sensible.mp3'),
     stared_user: [],
   },
   {
@@ -126,8 +118,7 @@ export const tracks = [
     duration_in_seconds: 206,
     album: 'Cinematic',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Winniethemoog_-_Action_Sport_Breakbeat.mp3',
+    track_file: publicPath('audio/Winniethemoog_-_Action_Sport_Breakbeat.mp3'),
     stared_user: [],
   },
 ]

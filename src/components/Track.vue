@@ -1,5 +1,6 @@
 <script setup>
-import { formatDuration } from '../utils/formatDuration.js'
+import { formatDuration } from '@/utils/formatDuration.js'
+import { publicPath } from '@/utils/publicPath.js'
 
 defineProps({
   track: {
@@ -15,13 +16,12 @@ defineProps({
       <div class="track__title">
         <div class="track__titleImage">
           <svg class="track__titleSvg">
-            <use href="/img/icon/sprite.svg#icon-note"></use>
+            <use :href="publicPath('img/icon/sprite.svg#icon-note')"></use>
           </svg>
         </div>
         <div class="track__title-text">
           <a class="track__titleLink" href="#">
             {{ track.name }}
-            <span class="track__titleSpan"></span>
           </a>
         </div>
       </div>
@@ -33,11 +33,9 @@ defineProps({
       </div>
       <div class="track__time">
         <svg class="track__timeSvg">
-          <use href="/img/icon/sprite.svg#icon-like"></use>
+          <use :href="publicPath('img/icon/sprite.svg#icon-like')"></use>
         </svg>
-        <span class="track__timeText">{{
-          formatDuration(track.duration_in_seconds)
-        }}</span>
+        <span class="track__timeText">{{ formatDuration(track.duration_in_seconds) }}</span>
       </div>
     </div>
   </div>
@@ -55,20 +53,23 @@ defineProps({
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
 .track__title {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 447px;
+  min-width: 0;
+  flex: 1 1 40%;
 }
 
 .track__titleImage {
+  flex: 0 0 auto;
   width: 51px;
   height: 51px;
   padding: 16px;
-  background: #313131;
+  background: var(--color-bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,53 +80,67 @@ defineProps({
   width: 18px;
   height: 17px;
   fill: transparent;
-  stroke: #4e4e4e;
+  stroke: var(--color-text-muted);
+}
+
+.track__title-text {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .track__titleLink {
+  display: block;
+  min-width: 0;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
-}
-
-.track__titleSpan {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #4e4e4e;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .track__author {
-  width: 321px;
+  flex: 0 1 29%;
+  min-width: 0;
   display: flex;
   justify-content: flex-start;
 }
 
 .track__authorLink {
+  min-width: 0;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .track__album {
-  width: 245px;
+  flex: 0 1 22%;
+  min-width: 0;
 }
 
 .track__albumLink {
+  display: block;
+  min-width: 0;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #696969;
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .track__time {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
 }
@@ -135,7 +150,7 @@ defineProps({
   height: 12px;
   margin-right: 17px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .track__timeText {
@@ -144,22 +159,22 @@ defineProps({
   font-size: 16px;
   line-height: 24px;
   text-align: right;
-  color: #696969;
+  color: var(--color-text-secondary);
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .playlist__track {
     flex-wrap: wrap;
     gap: 5px;
   }
 
   .track__title {
-    width: 100%;
+    flex: 1 1 100%;
   }
 
   .track__author,
   .track__album {
-    width: auto;
+    flex: 0 1 auto;
   }
 }
 </style>

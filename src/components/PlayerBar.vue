@@ -1,4 +1,6 @@
 <script setup>
+import { publicPath } from '@/utils/publicPath.js'
+
 defineProps({
   track: {
     type: Object,
@@ -16,27 +18,27 @@ defineProps({
           <div class="player__controls">
             <div class="player__btnPrev">
               <svg class="player__btnPrevSvg">
-                <use href="/img/icon/sprite.svg#icon-prev"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-prev')"></use>
               </svg>
             </div>
             <div class="player__btnPlay btn">
               <svg class="player__btnPlaySvg">
-                <use href="/img/icon/sprite.svg#icon-play"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-play')"></use>
               </svg>
             </div>
             <div class="player__btnNext">
               <svg class="player__btnNextSvg">
-                <use href="/img/icon/sprite.svg#icon-next"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-next')"></use>
               </svg>
             </div>
             <div class="player__btnRepeat btnIcon">
               <svg class="player__btnRepeatSvg">
-                <use href="/img/icon/sprite.svg#icon-repeat"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-repeat')"></use>
               </svg>
             </div>
             <div class="player__btnShuffle btnIcon">
               <svg class="player__btnShuffleSvg">
-                <use href="/img/icon/sprite.svg#icon-shuffle"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-shuffle')"></use>
               </svg>
             </div>
           </div>
@@ -45,7 +47,7 @@ defineProps({
             <div class="trackPlay__contain">
               <div class="trackPlay__image">
                 <svg class="trackPlay__svg">
-                  <use href="/img/icon/sprite.svg#icon-note"></use>
+                  <use :href="publicPath('img/icon/sprite.svg#icon-note')"></use>
                 </svg>
               </div>
               <div class="trackPlay__author">
@@ -63,12 +65,12 @@ defineProps({
             <div class="trackPlay__likeDis">
               <div class="trackPlay__like btnIcon">
                 <svg class="trackPlay__likeSvg">
-                  <use href="/img/icon/sprite.svg#icon-like"></use>
+                  <use :href="publicPath('img/icon/sprite.svg#icon-like')"></use>
                 </svg>
               </div>
               <div class="trackPlay__dislike btnIcon">
                 <svg class="trackPlay__dislikeSvg">
-                  <use href="/img/icon/sprite.svg#icon-dislike"></use>
+                  <use :href="publicPath('img/icon/sprite.svg#icon-dislike')"></use>
                 </svg>
               </div>
             </div>
@@ -79,15 +81,11 @@ defineProps({
           <div class="volume__content">
             <div class="volume__image">
               <svg class="volume__svg">
-                <use href="/img/icon/sprite.svg#icon-volume"></use>
+                <use :href="publicPath('img/icon/sprite.svg#icon-volume')"></use>
               </svg>
             </div>
             <div class="volume__progress btn">
-              <input
-                class="volume__progressLine btn"
-                type="range"
-                name="range"
-              />
+              <input class="volume__progressLine btn" type="range" name="range" />
             </div>
           </div>
         </div>
@@ -98,11 +96,13 @@ defineProps({
 
 <style scoped>
 .bar {
-  position: absolute;
+  position: sticky;
   bottom: 0;
-  left: 0;
+  z-index: 10;
+  flex: 0 0 auto;
   width: 100%;
-  background: rgba(28, 28, 28, 0.5);
+  background: var(--color-bg-player);
+  backdrop-filter: blur(10px);
 }
 
 .bar__content {
@@ -113,7 +113,7 @@ defineProps({
 .bar__playerProgress {
   width: 100%;
   height: 5px;
-  background: #2e2e2e;
+  background: var(--color-bg-progress);
 }
 
 .bar__playerBlock {
@@ -169,19 +169,19 @@ defineProps({
 .player__btnPlaySvg {
   width: 22px;
   height: 20px;
-  fill: #d9d9d9;
+  fill: var(--color-icon-control);
 }
 
 .player__btnNext {
   margin-right: 28px;
-  fill: #a53939;
+  fill: var(--color-icon-accent);
 }
 
 .player__btnNextSvg {
   width: 15px;
   height: 14px;
   fill: inherit;
-  stroke: #d9d9d9;
+  stroke: var(--color-icon-control);
 }
 
 .player__btnRepeat {
@@ -192,7 +192,7 @@ defineProps({
   width: 18px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .player__btnShuffle {
@@ -204,7 +204,7 @@ defineProps({
   width: 19px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .player__trackPlay {
@@ -225,7 +225,7 @@ defineProps({
 .trackPlay__image {
   width: 51px;
   height: 51px;
-  background-color: #313131;
+  background-color: var(--color-bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,7 +237,7 @@ defineProps({
   width: 18px;
   height: 17px;
   fill: transparent;
-  stroke: #4e4e4e;
+  stroke: var(--color-text-muted);
 }
 
 .trackPlay__author {
@@ -250,7 +250,7 @@ defineProps({
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -264,7 +264,7 @@ defineProps({
   font-weight: 400;
   font-size: 13px;
   line-height: 24px;
-  color: #ffffff;
+  color: var(--color-text-primary);
 }
 
 .trackPlay__likeDis {
@@ -282,7 +282,7 @@ defineProps({
   width: 14px;
   height: 12px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .trackPlay__dislike {
@@ -294,7 +294,7 @@ defineProps({
   width: 14.34px;
   height: 13px;
   fill: transparent;
-  stroke: #696969;
+  stroke: var(--color-text-secondary);
 }
 
 .volume__content {
@@ -326,18 +326,24 @@ defineProps({
   width: 100%;
   height: 2px;
   appearance: none;
-  background: #797979;
+  background: var(--color-volume);
   border-radius: 5px;
   outline: none;
   cursor: pointer;
+}
+
+.volume__progressLine::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--color-volume);
+  border-radius: 5px;
 }
 
 .volume__progressLine::-webkit-slider-thumb {
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #1a1a1a;
-  border: 2px solid white;
+  background: var(--color-thumb-bg);
+  border: 2px solid var(--color-thumb-border);
   border-radius: 50%;
   position: relative;
   margin-top: -7px;
@@ -349,26 +355,28 @@ defineProps({
 
 .btnIcon:hover svg {
   fill: transparent;
-  stroke: #acacac;
+  stroke: var(--color-icon-hover);
   cursor: pointer;
 }
 
 .btnIcon:active svg {
   fill: transparent;
-  stroke: #ffffff;
+  stroke: var(--color-text-primary);
   cursor: pointer;
 }
 
 .btnIcon:active .trackPlay__likeSvg,
 .btnIcon:active .trackPlay__dislikeSvg {
-  fill: #696969;
-  stroke: #ffffff;
+  fill: var(--color-text-secondary);
+  stroke: var(--color-text-primary);
   cursor: pointer;
 }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .bar {
     position: fixed;
+    bottom: 0;
+    left: 0;
   }
 
   .bar__playerBlock {
