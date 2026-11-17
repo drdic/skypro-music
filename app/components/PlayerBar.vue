@@ -1,5 +1,5 @@
 <script setup>
-import { publicPath } from '@/utils/publicPath.js'
+import { publicPath } from '~/utils/publicPath.js'
 
 defineProps({
   track: {

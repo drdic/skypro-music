@@ -1,6 +1,6 @@
 <script setup>
-import { formatDuration } from '@/utils/formatDuration.js'
-import { publicPath } from '@/utils/publicPath.js'
+import { formatDuration } from '~/utils/formatDuration.js'
+import { publicPath } from '~/utils/publicPath.js'
 
 defineProps({
   track: {

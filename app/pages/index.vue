@@ -1,10 +1,6 @@
 <script setup>
-import Navbar from '@/components/Navbar.vue'
-import FilterControls from '@/components/FilterControls.vue'
-import Playlist from '@/components/Playlist.vue'
-import PlayerBar from '@/components/PlayerBar.vue'
-import { tracks } from '@/data/tracks.js'
-import { publicPath } from '@/utils/publicPath.js'
+import { tracks } from '~/data/tracks.js'
+import { publicPath } from '~/utils/publicPath.js'
 </script>
 
 <template>

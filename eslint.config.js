@@ -10,12 +10,14 @@ export default defineConfig([
     files: ['**/*.{js,mjs,jsx,vue}'],
   },
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+  globalIgnores(['**/dist/**', '**/.nuxt/**', '**/.output/**', '**/coverage/**']),
 
   {
     languageOptions: {
       globals: {
         ...globals.browser,
+        ...globals.node,
+        useTheme: 'readonly',
       },
     },
   },
