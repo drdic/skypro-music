@@ -21,7 +21,10 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
       ],
-      link: [{ rel: 'stylesheet', href: `${baseURL}fonts/montserrat.css` }],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: `${baseURL}favicon.svg` },
+        { rel: 'stylesheet', href: `${baseURL}fonts/montserrat.css` },
+      ],
     },
   },
 })
