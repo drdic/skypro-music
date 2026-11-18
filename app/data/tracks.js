@@ -1,4 +1,4 @@
-import { publicPath } from '@/utils/publicPath.js'
+import { publicPath } from '~/utils/publicPath.js'
 
 export const tracks = [
   {

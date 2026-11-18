@@ -1,6 +1,5 @@
 <script setup>
-import Track from '@/components/Track.vue'
-import { publicPath } from '@/utils/publicPath.js'
+import { publicPath } from '~/utils/publicPath.js'
 
 defineProps({
   tracks: {
