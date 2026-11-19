@@ -10,7 +10,7 @@ export default defineConfig([
     files: ['**/*.{js,mjs,jsx,vue}'],
   },
 
-  globalIgnores(['**/dist/**', '**/.nuxt/**', '**/.output/**', '**/coverage/**']),
+  globalIgnores(['**/dist/**', '**/.nuxt/**', '**/.output/**', '**/coverage/**', 'plans/**']),
 
   {
     languageOptions: {
@@ -18,6 +18,10 @@ export default defineConfig([
         ...globals.browser,
         ...globals.node,
         useTheme: 'readonly',
+        useFetch: 'readonly',
+        ref: 'readonly',
+        computed: 'readonly',
+        onMounted: 'readonly',
         __APP_BASE_URL__: 'readonly',
       },
     },

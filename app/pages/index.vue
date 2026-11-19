@@ -1,6 +1,100 @@
 <script setup>
-import { tracks } from '~/data/tracks.js'
 import { publicPath } from '~/utils/publicPath.js'
+
+const API_URL = 'https://webdev-music-003b5b991590.herokuapp.com/catalog/track/all/'
+const UNKNOWN = 'Неизвестно'
+const SORT_OPTIONS = ['По умолчанию', 'Сначала новые', 'Сначала старые']
+
+const { data: response, pending, error } = await useFetch(API_URL)
+
+const tracks = computed(() => response.value?.data || [])
+
+const searchQuery = ref('')
+const activeTrack = ref(null)
+const selectedAuthors = ref([])
+const selectedYears = ref([])
+const selectedGenres = ref([])
+const selectedSort = ref(SORT_OPTIONS[0])
+
+function getAuthor(track) {
+  const author = String(track.author || '').trim()
+  return !author || author === '-' ? UNKNOWN : author
+}
+
+function getYear(track) {
+  const year = String(track.release_date || '').split('-')[0]
+  return year || UNKNOWN
+}
+
+function getGenres(track) {
+  if (Array.isArray(track.genre)) {
+    return track.genre.filter(Boolean).map((item) => item.trim())
+  }
+  return track.genre ? [track.genre.trim()] : []
+}
+
+function sortWithUnknownLast(items, compare) {
+  return items.sort((a, b) => {
+    if (a === UNKNOWN) return 1
+    if (b === UNKNOWN) return -1
+    return compare(a, b)
+  })
+}
+
+const authorItems = computed(() => {
+  const items = new Set()
+  tracks.value.forEach((track) => items.add(getAuthor(track)))
+  return sortWithUnknownLast(Array.from(items), (a, b) => a.localeCompare(b))
+})
+
+const yearItems = computed(() => {
+  const items = new Set()
+  tracks.value.forEach((track) => items.add(getYear(track)))
+  return sortWithUnknownLast(Array.from(items), (a, b) => b.localeCompare(a))
+})
+
+const genreItems = computed(() => {
+  const items = new Set()
+  tracks.value.forEach((track) => getGenres(track).forEach((item) => items.add(item)))
+  return sortWithUnknownLast(Array.from(items), (a, b) => a.localeCompare(b))
+})
+
+const filteredTracks = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase()
+
+  const result = tracks.value.filter((track) => {
+    if (query && !String(track.name || '').toLowerCase().includes(query)) return false
+
+    if (selectedAuthors.value.length && !selectedAuthors.value.includes(getAuthor(track))) {
+      return false
+    }
+
+    if (selectedYears.value.length && !selectedYears.value.includes(getYear(track))) {
+      return false
+    }
+
+    if (selectedGenres.value.length) {
+      const genres = getGenres(track)
+      if (!genres.some((item) => selectedGenres.value.includes(item))) return false
+    }
+
+    return true
+  })
+
+  if (selectedSort.value === 'Сначала новые') {
+    result.sort((a, b) =>
+      String(b.release_date || '').localeCompare(String(a.release_date || '')),
+    )
+  }
+
+  if (selectedSort.value === 'Сначала старые') {
+    result.sort((a, b) =>
+      String(a.release_date || '').localeCompare(String(b.release_date || '')),
+    )
+  }
+
+  return result
+})
 </script>
 
 <template>
@@ -14,14 +108,42 @@ import { publicPath } from '~/utils/publicPath.js'
             <svg class="search__svg">
               <use :href="publicPath('img/icon/sprite.svg#icon-search')"></use>
             </svg>
-            <input class="search__text" type="search" placeholder="Поиск" name="search" />
+            <input
+              v-model="searchQuery"
+              class="search__text"
+              type="search"
+              placeholder="Поиск"
+              name="search"
+            />
           </div>
 
           <h2 class="centerblock__h2">Треки</h2>
 
-          <FilterControls />
+          <FilterControls
+            v-model:authors="selectedAuthors"
+            v-model:years="selectedYears"
+            v-model:genres="selectedGenres"
+            v-model:sort="selectedSort"
+            :author-options="authorItems"
+            :year-options="yearItems"
+            :genre-options="genreItems"
+            :sort-options="SORT_OPTIONS"
+          />
 
-          <Playlist :tracks="tracks" />
+          <div v-if="pending" class="state state_loading">Загрузка…</div>
+
+          <div v-else-if="error" class="state state_error">
+            Не удалось загрузить треки. Попробуйте обновить страницу.
+          </div>
+
+          <div v-else-if="!filteredTracks.length" class="state">Треки не найдены</div>
+
+          <Playlist
+            v-else
+            :tracks="filteredTracks"
+            :active-track-id="activeTrack ? activeTrack._id : null"
+            @select="activeTrack = $event"
+          />
         </div>
 
         <div class="main__sidebar">
@@ -74,7 +196,7 @@ import { publicPath } from '~/utils/publicPath.js'
         </div>
       </main>
 
-      <PlayerBar :track="tracks[0]" />
+      <PlayerBar v-if="activeTrack" :track="activeTrack" />
 
       <footer class="footer"></footer>
     </div>
@@ -160,6 +282,18 @@ import { publicPath } from '~/utils/publicPath.js'
   letter-spacing: -0.8px;
   margin-bottom: 45px;
   color: var(--color-text-primary);
+}
+
+.state {
+  padding: 40px 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  color: var(--color-text-secondary);
+}
+
+.state_error {
+  color: var(--color-accent-hover);
 }
 
 .main__sidebar {
