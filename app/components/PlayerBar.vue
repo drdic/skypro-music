@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { publicPath } from '~/utils/publicPath.js'
 
 const props = defineProps({
@@ -23,6 +23,10 @@ const trackAuthor = computed(() => {
 })
 
 const trackUrl = computed(() => props.track?.track_file || '')
+
+const playIcon = computed(() =>
+  publicPath(isPlaying.value ? 'img/icon/sprite.svg#icon-pause' : 'img/icon/sprite.svg#icon-play'),
+)
 
 function play() {
   if (!audio.value) return
@@ -51,11 +55,13 @@ function onPause() {
   isPlaying.value = false
 }
 
-watch(trackUrl, (value) => {
+onMounted(() => {
+  nextTick(play)
+})
+
+watch(trackUrl, () => {
   isPlaying.value = false
-  if (!audio.value || !value) return
-  audio.value.load()
-  play()
+  nextTick(play)
 })
 
 onBeforeUnmount(() => {
@@ -88,11 +94,11 @@ onBeforeUnmount(() => {
             <button
               class="player__btnPlay btn"
               type="button"
-              aria-label="Воспроизвести трек"
+              :aria-label="isPlaying ? 'Приостановить трек' : 'Воспроизвести трек'"
               @click="togglePlay"
             >
               <svg class="player__btnPlaySvg">
-                <use :href="publicPath('img/icon/sprite.svg#icon-play')"></use>
+                <use :href="playIcon"></use>
               </svg>
             </button>
             <div class="player__btnNext">
