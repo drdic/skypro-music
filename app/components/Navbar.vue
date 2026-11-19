@@ -1,5 +1,7 @@
 <script setup>
 const { isLight, toggleTheme } = useTheme()
+
+const isMenuOpen = ref(false)
 </script>
 
 <template>
@@ -11,21 +13,28 @@ const { isLight, toggleTheme } = useTheme()
       </svg>
       <span class="logo__text">skypro.music</span>
     </div>
-    <div class="nav__burger">
+    <button
+      class="nav__burger"
+      :class="{ nav__burger_open: isMenuOpen }"
+      type="button"
+      :aria-expanded="isMenuOpen"
+      aria-label="Меню навигации"
+      @click="isMenuOpen = !isMenuOpen"
+    >
       <span class="burger__line"></span>
       <span class="burger__line"></span>
       <span class="burger__line"></span>
-    </div>
-    <div class="nav__menu">
+    </button>
+    <div v-show="isMenuOpen" class="nav__menu">
       <ul class="menu__list">
         <li class="menu__item">
           <a href="#" class="menu__link">Главное</a>
         </li>
         <li class="menu__item">
-          <a href="#" class="menu__link">Мой плейлист</a>
+          <a href="#" class="menu__link">Мои треки</a>
         </li>
         <li class="menu__item">
-          <a href="#" class="menu__link">Войти</a>
+          <a href="#" class="menu__link">Выйти</a>
         </li>
         <li class="menu__item">
           <button class="menu__theme" type="button" @click="toggleTheme">
@@ -76,6 +85,13 @@ const { isLight, toggleTheme } = useTheme()
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: transparent;
+  border: none;
+}
+
+.nav__burger_open {
+  justify-content: center;
+  gap: 6px;
 }
 
 .burger__line {
@@ -87,7 +103,6 @@ const { isLight, toggleTheme } = useTheme()
 
 .nav__menu {
   display: block;
-  visibility: visible;
 }
 
 .menu__list {
@@ -146,9 +161,21 @@ const { isLight, toggleTheme } = useTheme()
     margin-bottom: 0;
   }
 
+  .nav__menu {
+    position: absolute;
+    top: 60px;
+    left: 15px;
+    z-index: 20;
+    min-width: 180px;
+    padding: 10px 15px;
+    border-radius: 12px;
+    background-color: var(--color-bg-card);
+  }
+
   .menu__list {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 12px;
     padding: 0;
   }
 

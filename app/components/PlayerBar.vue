@@ -1,16 +1,86 @@
 <script setup>
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { publicPath } from '~/utils/publicPath.js'
 
-defineProps({
+const props = defineProps({
   track: {
     type: Object,
     default: null,
   },
 })
+
+const audio = ref(null)
+const isPlaying = ref(false)
+
+const trackName = computed(() => {
+  const name = String(props.track?.name || '').trim()
+  return name || 'Неизвестно'
+})
+
+const trackAuthor = computed(() => {
+  const author = String(props.track?.author || '').trim()
+  return !author || author === '-' ? 'Неизвестно' : author
+})
+
+const trackUrl = computed(() => props.track?.track_file || '')
+
+const playIcon = computed(() =>
+  publicPath(isPlaying.value ? 'img/icon/sprite.svg#icon-pause' : 'img/icon/sprite.svg#icon-play'),
+)
+
+function play() {
+  if (!audio.value) return
+  const result = audio.value.play()
+  if (result && typeof result.catch === 'function') {
+    result.catch(() => {
+      isPlaying.value = false
+    })
+  }
+}
+
+function togglePlay() {
+  if (!audio.value) return
+  if (audio.value.paused) {
+    play()
+  } else {
+    audio.value.pause()
+  }
+}
+
+function onPlay() {
+  isPlaying.value = true
+}
+
+function onPause() {
+  isPlaying.value = false
+}
+
+onMounted(() => {
+  nextTick(play)
+})
+
+watch(trackUrl, () => {
+  isPlaying.value = false
+  nextTick(play)
+})
+
+onBeforeUnmount(() => {
+  if (audio.value) {
+    audio.value.pause()
+  }
+})
 </script>
 
 <template>
   <div class="bar">
+    <audio
+      ref="audio"
+      :src="trackUrl"
+      preload="metadata"
+      @play="onPlay"
+      @pause="onPause"
+      @ended="onPause"
+    ></audio>
     <div class="bar__content">
       <div class="bar__playerProgress"></div>
       <div class="bar__playerBlock">
@@ -21,11 +91,16 @@ defineProps({
                 <use :href="publicPath('img/icon/sprite.svg#icon-prev')"></use>
               </svg>
             </div>
-            <div class="player__btnPlay btn">
+            <button
+              class="player__btnPlay btn"
+              type="button"
+              :aria-label="isPlaying ? 'Приостановить трек' : 'Воспроизвести трек'"
+              @click="togglePlay"
+            >
               <svg class="player__btnPlaySvg">
-                <use :href="publicPath('img/icon/sprite.svg#icon-play')"></use>
+                <use :href="playIcon"></use>
               </svg>
-            </div>
+            </button>
             <div class="player__btnNext">
               <svg class="player__btnNextSvg">
                 <use :href="publicPath('img/icon/sprite.svg#icon-next')"></use>
@@ -51,14 +126,12 @@ defineProps({
                 </svg>
               </div>
               <div class="trackPlay__author">
-                <a class="trackPlay__authorLink" href="#">
-                  {{ track ? track.name : 'Ты та...' }}
-                </a>
+                <span class="trackPlay__authorLink" :data-playing="isPlaying">
+                  {{ trackName }}
+                </span>
               </div>
               <div class="trackPlay__album">
-                <a class="trackPlay__albumLink" href="#">
-                  {{ track ? track.author : 'Баста' }}
-                </a>
+                <span class="trackPlay__albumLink">{{ trackAuthor }}</span>
               </div>
             </div>
 
@@ -151,6 +224,11 @@ defineProps({
   padding: 5px;
   display: flex;
   align-items: center;
+}
+
+.player__btnPlay {
+  background-color: transparent;
+  border: none;
 }
 
 .player__btnPrev {
