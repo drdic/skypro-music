@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
   telemetry: false,
+  modules: ['@pinia/nuxt'],
   css: ['~/assets/theme.css', '~/assets/main.css'],
   vite: {
     define: {
