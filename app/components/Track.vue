@@ -1,17 +1,38 @@
 <script setup>
+import { computed } from 'vue'
 import { formatDuration } from '~/utils/formatDuration.js'
 import { publicPath } from '~/utils/publicPath.js'
 
-defineProps({
+const props = defineProps({
   track: {
     type: Object,
     required: true,
   },
+  isActive: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const emit = defineEmits(['select'])
+
+function selectTrack() {
+  emit('select', props.track)
+}
+
+const authorName = computed(() => {
+  const author = String(props.track.author || '').trim()
+  return !author || author === '-' ? 'Неизвестно' : author
+})
+
+const albumName = computed(() => {
+  const album = String(props.track.album || '').trim()
+  return album || 'Неизвестно'
 })
 </script>
 
 <template>
-  <div class="playlist__item">
+  <div class="playlist__item" :class="{ playlist__item_active: isActive }" @click="selectTrack">
     <div class="playlist__track">
       <div class="track__title">
         <div class="track__titleImage">
@@ -20,16 +41,16 @@ defineProps({
           </svg>
         </div>
         <div class="track__title-text">
-          <a class="track__titleLink" href="#">
+          <span class="track__titleLink">
             {{ track.name }}
-          </a>
+          </span>
         </div>
       </div>
       <div class="track__author">
-        <a class="track__authorLink" href="#">{{ track.author }}</a>
+        <a class="track__authorLink" href="#">{{ authorName }}</a>
       </div>
       <div class="track__album">
-        <a class="track__albumLink" href="#">{{ track.album }}</a>
+        <a class="track__albumLink" href="#">{{ albumName }}</a>
       </div>
       <div class="track__time">
         <svg class="track__timeSvg">
@@ -46,6 +67,12 @@ defineProps({
   width: 100%;
   display: block;
   margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.playlist__item_active .track__titleLink,
+.playlist__item_active .track__authorLink {
+  color: var(--color-accent);
 }
 
 .playlist__track {

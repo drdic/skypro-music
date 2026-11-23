@@ -6,7 +6,13 @@ defineProps({
     type: Array,
     required: true,
   },
+  activeTrackId: {
+    type: [Number, String],
+    default: null,
+  },
 })
+
+const emit = defineEmits(['select'])
 </script>
 
 <template>
@@ -22,7 +28,13 @@ defineProps({
       </div>
     </div>
     <div class="content__playlist">
-      <Track v-for="track in tracks" :key="track._id" :track="track" />
+      <Track
+        v-for="track in tracks"
+        :key="track._id"
+        :track="track"
+        :is-active="track._id === activeTrackId"
+        @select="emit('select', $event)"
+      />
     </div>
   </div>
 </template>
