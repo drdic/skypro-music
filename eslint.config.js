@@ -21,6 +21,7 @@ export default defineConfig([
         useFetch: 'readonly',
         ref: 'readonly',
         computed: 'readonly',
+        watch: 'readonly',
         onMounted: 'readonly',
         __APP_BASE_URL__: 'readonly',
       },

@@ -1,111 +1,99 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { publicPath } from '~/utils/publicPath.js'
+import { usePlayerStore } from '~/stores/player.js'
+import { useAudioPlayer } from '~/composables/useAudioPlayer.js'
 
-const props = defineProps({
-  track: {
-    type: Object,
-    default: null,
-  },
-})
+const playerStore = usePlayerStore()
+const { initPlayer, destroyPlayer, togglePlay, seekTo, setVolume, nextTrack, prevTrack } =
+  useAudioPlayer()
 
-const audio = ref(null)
-const isPlaying = ref(false)
+const audioRef = ref(null)
+const progressBar = ref(null)
+
+const playIcon = computed(() =>
+  publicPath(
+    playerStore.isPlaying ? 'img/icon/sprite.svg#icon-pause' : 'img/icon/sprite.svg#icon-play',
+  ),
+)
 
 const trackName = computed(() => {
-  const name = String(props.track?.name || '').trim()
-  return name || 'Неизвестно'
+  const name = String(playerStore.currentTrack?.name || '').trim()
+  return name || 'Выберите трек'
 })
 
 const trackAuthor = computed(() => {
-  const author = String(props.track?.author || '').trim()
+  const author = String(playerStore.currentTrack?.author || '').trim()
   return !author || author === '-' ? 'Неизвестно' : author
 })
 
-const trackUrl = computed(() => props.track?.track_file || '')
+const hasTrack = computed(() => Boolean(playerStore.currentTrack))
 
-const playIcon = computed(() =>
-  publicPath(isPlaying.value ? 'img/icon/sprite.svg#icon-pause' : 'img/icon/sprite.svg#icon-play'),
-)
+const progressStyle = computed(() => ({ width: `${playerStore.progress}%` }))
 
-function play() {
-  if (!audio.value) return
-  const result = audio.value.play()
-  if (result && typeof result.catch === 'function') {
-    result.catch(() => {
-      isPlaying.value = false
-    })
-  }
+function handleProgressClick(event) {
+  if (!playerStore.currentTrack) return
+  const element = progressBar.value
+  if (!element) return
+
+  const { left, width } = element.getBoundingClientRect()
+  const percentage = width ? ((event.clientX - left) / width) * 100 : 0
+  seekTo(percentage)
 }
 
-function togglePlay() {
-  if (!audio.value) return
-  if (audio.value.paused) {
-    play()
-  } else {
-    audio.value.pause()
-  }
-}
-
-function onPlay() {
-  isPlaying.value = true
-}
-
-function onPause() {
-  isPlaying.value = false
+function handleVolumeInput(event) {
+  setVolume(event.target.value)
 }
 
 onMounted(() => {
-  nextTick(play)
-})
-
-watch(trackUrl, () => {
-  isPlaying.value = false
-  nextTick(play)
+  initPlayer(audioRef.value)
 })
 
 onBeforeUnmount(() => {
-  if (audio.value) {
-    audio.value.pause()
-  }
+  destroyPlayer()
 })
 </script>
 
 <template>
-  <div class="bar">
-    <audio
-      ref="audio"
-      :src="trackUrl"
-      preload="metadata"
-      @play="onPlay"
-      @pause="onPause"
-      @ended="onPause"
-    ></audio>
+  <div class="bar" v-show="hasTrack">
     <div class="bar__content">
-      <div class="bar__playerProgress"></div>
+      <div ref="progressBar" class="bar__playerProgress" @click="handleProgressClick">
+        <div class="bar__playerProgressLine" :style="progressStyle"></div>
+      </div>
       <div class="bar__playerBlock">
         <div class="bar__player">
           <div class="player__controls">
-            <div class="player__btnPrev">
+            <button
+              class="player__btnPrev btn"
+              type="button"
+              aria-label="Предыдущий трек"
+              @click="prevTrack"
+            >
               <svg class="player__btnPrevSvg">
                 <use :href="publicPath('img/icon/sprite.svg#icon-prev')"></use>
               </svg>
-            </div>
+            </button>
             <button
               class="player__btnPlay btn"
               type="button"
-              :aria-label="isPlaying ? 'Приостановить трек' : 'Воспроизвести трек'"
+              :aria-label="playerStore.isPlaying ? 'Приостановить трек' : 'Воспроизвести трек'"
+              :disabled="!hasTrack"
               @click="togglePlay"
             >
               <svg class="player__btnPlaySvg">
                 <use :href="playIcon"></use>
               </svg>
             </button>
-            <div class="player__btnNext">
+            <button
+              class="player__btnNext btn"
+              type="button"
+              aria-label="Следующий трек"
+              @click="nextTrack"
+            >
               <svg class="player__btnNextSvg">
                 <use :href="publicPath('img/icon/sprite.svg#icon-next')"></use>
               </svg>
-            </div>
+            </button>
             <div class="player__btnRepeat btnIcon">
               <svg class="player__btnRepeatSvg">
                 <use :href="publicPath('img/icon/sprite.svg#icon-repeat')"></use>
@@ -126,9 +114,7 @@ onBeforeUnmount(() => {
                 </svg>
               </div>
               <div class="trackPlay__author">
-                <span class="trackPlay__authorLink" :data-playing="isPlaying">
-                  {{ trackName }}
-                </span>
+                <span class="trackPlay__authorLink">{{ trackName }}</span>
               </div>
               <div class="trackPlay__album">
                 <span class="trackPlay__albumLink">{{ trackAuthor }}</span>
@@ -158,13 +144,24 @@ onBeforeUnmount(() => {
               </svg>
             </div>
             <div class="volume__progress btn">
-              <input class="volume__progressLine btn" type="range" name="range" />
+              <input
+                class="volume__progressLine btn"
+                type="range"
+                name="range"
+                min="0"
+                max="100"
+                step="1"
+                :value="playerStore.volume"
+                aria-label="Громкость"
+                @input="handleVolumeInput"
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <audio ref="audioRef" preload="metadata"></audio>
 </template>
 
 <style scoped>
@@ -187,6 +184,13 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 5px;
   background: var(--color-bg-progress);
+  cursor: pointer;
+  position: relative;
+}
+
+.bar__playerProgressLine {
+  height: 100%;
+  background: var(--color-accent);
 }
 
 .bar__playerBlock {
@@ -226,9 +230,16 @@ onBeforeUnmount(() => {
   align-items: center;
 }
 
-.player__btnPlay {
+.player__btnPlay,
+.player__btnPrev,
+.player__btnNext {
   background-color: transparent;
   border: none;
+}
+
+.player__btnPlay:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
 .player__btnPrev {

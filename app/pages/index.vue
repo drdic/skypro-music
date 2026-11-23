@@ -1,5 +1,7 @@
 <script setup>
 import { publicPath } from '~/utils/publicPath.js'
+import { usePlayerStore } from '~/stores/player.js'
+import { useAudioPlayer } from '~/composables/useAudioPlayer.js'
 
 const API_URL = 'https://webdev-music-003b5b991590.herokuapp.com/catalog/track/all/'
 const UNKNOWN = 'Неизвестно'
@@ -9,8 +11,10 @@ const { data: response, pending, error } = await useFetch(API_URL)
 
 const tracks = computed(() => response.value?.data || [])
 
+const playerStore = usePlayerStore()
+const { playTrack } = useAudioPlayer()
+
 const searchQuery = ref('')
-const activeTrack = ref(null)
 const selectedAuthors = ref([])
 const selectedYears = ref([])
 const selectedGenres = ref([])
@@ -95,6 +99,18 @@ const filteredTracks = computed(() => {
 
   return result
 })
+
+function handleSelectTrack(track) {
+  playTrack(track)
+}
+
+watch(
+  filteredTracks,
+  (list) => {
+    playerStore.setPlaylist(list)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -141,8 +157,8 @@ const filteredTracks = computed(() => {
           <Playlist
             v-else
             :tracks="filteredTracks"
-            :active-track-id="activeTrack ? activeTrack._id : null"
-            @select="activeTrack = $event"
+            :active-track-id="playerStore.currentTrack?._id || null"
+            @select="handleSelectTrack"
           />
         </div>
 
@@ -196,7 +212,7 @@ const filteredTracks = computed(() => {
         </div>
       </main>
 
-      <PlayerBar v-if="activeTrack" :track="activeTrack" />
+      <PlayerBar />
 
       <footer class="footer"></footer>
     </div>
