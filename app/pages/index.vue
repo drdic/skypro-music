@@ -158,6 +158,7 @@ watch(
             v-else
             :tracks="filteredTracks"
             :active-track-id="playerStore.currentTrack?._id || null"
+            :is-playing="playerStore.isPlaying"
             @select="handleSelectTrack"
           />
         </div>

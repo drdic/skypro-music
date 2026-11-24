@@ -12,6 +12,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isPlaying: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['select'])
@@ -36,7 +40,12 @@ const albumName = computed(() => {
     <div class="playlist__track">
       <div class="track__title">
         <div class="track__titleImage">
-          <svg class="track__titleSvg">
+          <span
+            v-if="isActive"
+            class="track__titleDot"
+            :class="{ track__titleDot_pulsing: isPlaying }"
+          ></span>
+          <svg v-else class="track__titleSvg">
             <use :href="publicPath('img/icon/sprite.svg#icon-note')"></use>
           </svg>
         </div>
@@ -47,10 +56,10 @@ const albumName = computed(() => {
         </div>
       </div>
       <div class="track__author">
-        <a class="track__authorLink" href="#">{{ authorName }}</a>
+        <a class="track__authorLink" href="#" @click.prevent>{{ authorName }}</a>
       </div>
       <div class="track__album">
-        <a class="track__albumLink" href="#">{{ albumName }}</a>
+        <a class="track__albumLink" href="#" @click.prevent>{{ albumName }}</a>
       </div>
       <div class="track__time">
         <svg class="track__timeSvg">
@@ -71,7 +80,9 @@ const albumName = computed(() => {
 }
 
 .playlist__item_active .track__titleLink,
-.playlist__item_active .track__authorLink {
+.playlist__item_active .track__authorLink,
+.playlist__item_active .track__albumLink,
+.playlist__item_active .track__timeText {
   color: var(--color-accent);
 }
 
@@ -108,6 +119,30 @@ const albumName = computed(() => {
   height: 17px;
   fill: transparent;
   stroke: var(--color-text-muted);
+}
+
+.track__titleDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+}
+
+.track__titleDot_pulsing {
+  animation: trackDotPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes trackDotPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.7);
+    opacity: 0.35;
+  }
 }
 
 .track__title-text {

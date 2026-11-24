@@ -10,6 +10,10 @@ defineProps({
     type: [Number, String],
     default: null,
   },
+  isPlaying: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['select'])
@@ -33,6 +37,7 @@ const emit = defineEmits(['select'])
         :key="track._id"
         :track="track"
         :is-active="track._id === activeTrackId"
+        :is-playing="isPlaying && track._id === activeTrackId"
         @select="emit('select', $event)"
       />
     </div>
