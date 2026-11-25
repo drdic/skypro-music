@@ -16,12 +16,20 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  isFavorite: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const emit = defineEmits(['select'])
+const emit = defineEmits(['select', 'toggle-favorite'])
 
 function selectTrack() {
   emit('select', props.track)
+}
+
+function toggleFavorite() {
+  emit('toggle-favorite', props.track)
 }
 
 const authorName = computed(() => {
@@ -62,9 +70,17 @@ const albumName = computed(() => {
         <a class="track__albumLink" href="#" @click.prevent>{{ albumName }}</a>
       </div>
       <div class="track__time">
-        <svg class="track__timeSvg">
-          <use :href="publicPath('img/icon/sprite.svg#icon-like')"></use>
-        </svg>
+        <button
+          class="track__timeLike"
+          :class="{ track__timeLike_active: isFavorite }"
+          type="button"
+          :aria-label="isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'"
+          @click.stop="toggleFavorite"
+        >
+          <svg class="track__timeSvg">
+            <use :href="publicPath('img/icon/sprite.svg#icon-like')"></use>
+          </svg>
+        </button>
         <span class="track__timeText">{{ formatDuration(track.duration_in_seconds) }}</span>
       </div>
     </div>
@@ -207,12 +223,30 @@ const albumName = computed(() => {
   align-items: center;
 }
 
+.track__timeLike {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-right: 17px;
+  background-color: transparent;
+  border: none;
+}
+
 .track__timeSvg {
   width: 14px;
   height: 12px;
-  margin-right: 17px;
   fill: transparent;
   stroke: var(--color-text-secondary);
+  transition: stroke 0.2s ease-in-out;
+}
+
+.track__timeLike:hover .track__timeSvg {
+  stroke: var(--color-accent);
+}
+
+.track__timeLike_active .track__timeSvg {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
 }
 
 .track__timeText {
