@@ -1,7 +1,28 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+import { useTheme } from '~/composables/useTheme.js'
+import { useAuthStore } from '~/stores/auth.js'
+
 const { isLight, toggleTheme } = useTheme()
+const authStore = useAuthStore()
+const router = useRouter()
 
 const isMenuOpen = ref(false)
+const isMounted = ref(false)
+
+onMounted(() => {
+  isMounted.value = true
+})
+
+function handleLogout() {
+  authStore.logout()
+  isMenuOpen.value = false
+  router.push('/login')
+}
+
+function closeMenu() {
+  isMenuOpen.value = false
+}
 </script>
 
 <template>
@@ -28,13 +49,18 @@ const isMenuOpen = ref(false)
     <div v-show="isMenuOpen" class="nav__menu">
       <ul class="menu__list">
         <li class="menu__item">
-          <a href="#" class="menu__link">Главное</a>
+          <NuxtLink class="menu__link" to="/" @click="closeMenu">Главное</NuxtLink>
         </li>
         <li class="menu__item">
-          <a href="#" class="menu__link">Мои треки</a>
+          <NuxtLink class="menu__link" to="/favorites" @click="closeMenu">Мои треки</NuxtLink>
         </li>
-        <li class="menu__item">
-          <a href="#" class="menu__link">Выйти</a>
+        <li v-if="!isMounted || !authStore.isAuthorized" class="menu__item">
+          <NuxtLink class="menu__link" to="/login" @click="closeMenu">Войти</NuxtLink>
+        </li>
+        <li v-else class="menu__item">
+          <button class="menu__link menu__link_button" type="button" @click="handleLogout">
+            Выйти
+          </button>
         </li>
         <li class="menu__item">
           <button class="menu__theme" type="button" @click="toggleTheme">
@@ -122,7 +148,19 @@ const isMenuOpen = ref(false)
   transition: color 0.2s ease-in-out;
 }
 
+.menu__link_button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+}
+
 .menu__link:hover {
+  color: var(--color-accent);
+}
+
+.menu__link.router-link-active {
   color: var(--color-accent);
 }
 

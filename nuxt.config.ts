@@ -8,6 +8,12 @@ export default defineNuxtConfig({
   telemetry: false,
   modules: ['@pinia/nuxt'],
   css: ['~/assets/theme.css', '~/assets/main.css'],
+  nitro: {
+    prerender: {
+      crawlLinks: false,
+      routes: ['/', '/login', '/signup', '/favorites', '/category/2', '/category/3', '/category/4'],
+    },
+  },
   vite: {
     define: {
       __APP_BASE_URL__: JSON.stringify(baseURL),
