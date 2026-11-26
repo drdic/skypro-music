@@ -27,13 +27,13 @@ function closeMenu() {
 
 <template>
   <nav class="main__nav">
-    <div class="nav__logo">
+    <NuxtLink class="nav__logo" to="/" aria-label="На главную">
       <svg class="logo__icon" viewBox="0 0 26 18" aria-hidden="true">
         <path d="M0 0 L14 9 L0 18 Z" fill="#21bfef" />
         <path d="M10 0 L24 9 L10 18 Z" fill="#b8e62e" />
       </svg>
       <span class="logo__text">skypro.music</span>
-    </div>
+    </NuxtLink>
     <button
       class="nav__burger"
       :class="{ nav__burger_open: isMenuOpen }"
@@ -81,11 +81,14 @@ function closeMenu() {
 }
 
 .nav__logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding: 13px 0;
   background-color: transparent;
   margin-bottom: 20px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .logo__icon {
@@ -113,18 +116,25 @@ function closeMenu() {
   justify-content: space-between;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
 .nav__burger_open {
   justify-content: center;
-  gap: 6px;
+  gap: 3px;
 }
 
 .burger__line {
-  display: inline-block;
+  display: block;
+  flex: 0 0 1px;
   width: 100%;
   height: 1px;
   background-color: var(--color-burger);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.nav__burger:hover .burger__line {
+  background-color: var(--color-accent);
 }
 
 .nav__menu {

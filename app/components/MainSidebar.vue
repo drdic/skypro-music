@@ -9,9 +9,20 @@ const catalogStore = useCatalogStore()
 
 const isMounted = ref(false)
 
-const collections = computed(() =>
-  catalogStore.collections.length ? catalogStore.collections.slice(0, 3) : [],
-)
+const PLAYLIST_COVERS = {
+  'Плейлист дня': 'img/playlist01.png',
+  'Танцевальные хиты': 'img/playlist02.png',
+  'Инди-заряд': 'img/playlist03.png',
+}
+
+const collections = computed(() => {
+  const items = catalogStore.collections.filter((item) => item.name && item.items?.length)
+  return [...items].sort((a, b) => Number(a._id) - Number(b._id)).slice(0, 3)
+})
+
+function playlistCover(collection, index) {
+  return PLAYLIST_COVERS[collection.name] || `img/playlist0${index + 1}.png`
+}
 
 const showAuthorized = computed(() => isMounted.value && authStore.isAuthorized)
 
@@ -41,8 +52,9 @@ onMounted(() => {
           <NuxtLink class="sidebar__link" :to="`/category/${collection._id}`">
             <img
               class="sidebar__img"
-              :src="publicPath(`img/playlist0${index + 1}.png`)"
+              :src="publicPath(playlistCover(collection, index))"
               :alt="collection.name"
+              :aria-label="collection.name"
               width="250"
               height="170"
             />
