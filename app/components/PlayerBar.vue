@@ -17,6 +17,19 @@ const playIcon = computed(() =>
   ),
 )
 
+const canNext = computed(() => playerStore.canNext)
+const canPrev = computed(() => playerStore.canPrev)
+const isShuffled = computed(() => playerStore.isShuffled)
+const isLooping = computed(() => playerStore.isLooping)
+
+function toggleShuffle() {
+  playerStore.toggleShuffle()
+}
+
+function toggleLoop() {
+  playerStore.toggleLoop()
+}
+
 const trackName = computed(() => {
   const name = String(playerStore.currentTrack?.name || '').trim()
   return name || 'Выберите трек'
@@ -55,7 +68,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="bar" v-show="hasTrack">
+  <div v-show="hasTrack" class="bar">
     <div class="bar__content">
       <div ref="progressBar" class="bar__playerProgress" @click="handleProgressClick">
         <div class="bar__playerProgressLine" :style="progressStyle"></div>
@@ -67,6 +80,7 @@ onBeforeUnmount(() => {
               class="player__btnPrev btn"
               type="button"
               aria-label="Предыдущий трек"
+              :disabled="!canPrev"
               @click="prevTrack"
             >
               <svg class="player__btnPrevSvg">
@@ -88,22 +102,37 @@ onBeforeUnmount(() => {
               class="player__btnNext btn"
               type="button"
               aria-label="Следующий трек"
+              :disabled="!canNext"
               @click="nextTrack"
             >
               <svg class="player__btnNextSvg">
                 <use :href="publicPath('img/icon/sprite.svg#icon-next')"></use>
               </svg>
             </button>
-            <div class="player__btnRepeat btnIcon">
+            <button
+              class="player__btnRepeat btnIcon"
+              :class="{ player__btnRepeat_active: isLooping }"
+              type="button"
+              :aria-pressed="isLooping"
+              aria-label="Повтор трека"
+              @click="toggleLoop"
+            >
               <svg class="player__btnRepeatSvg">
                 <use :href="publicPath('img/icon/sprite.svg#icon-repeat')"></use>
               </svg>
-            </div>
-            <div class="player__btnShuffle btnIcon">
+            </button>
+            <button
+              class="player__btnShuffle btnIcon"
+              :class="{ player__btnShuffle_active: isShuffled }"
+              type="button"
+              :aria-pressed="isShuffled"
+              aria-label="Перемешать треки"
+              @click="toggleShuffle"
+            >
               <svg class="player__btnShuffleSvg">
                 <use :href="publicPath('img/icon/sprite.svg#icon-shuffle')"></use>
               </svg>
-            </div>
+            </button>
           </div>
 
           <div class="player__trackPlay">
@@ -242,6 +271,17 @@ onBeforeUnmount(() => {
   opacity: 0.6;
 }
 
+.player__btnPrev,
+.player__btnNext {
+  cursor: pointer;
+}
+
+.player__btnPrev:disabled,
+.player__btnNext:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
 .player__btnPrev {
   margin-right: 23px;
 }
@@ -275,6 +315,19 @@ onBeforeUnmount(() => {
 
 .player__btnRepeat {
   margin-right: 24px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.player__btnRepeat:hover .player__btnRepeatSvg,
+.player__btnShuffle:hover .player__btnShuffleSvg {
+  stroke: var(--color-accent-hover);
+}
+
+.player__btnRepeat_active .player__btnRepeatSvg,
+.player__btnShuffle_active .player__btnShuffleSvg {
+  stroke: var(--color-accent);
 }
 
 .player__btnRepeatSvg {
@@ -287,6 +340,9 @@ onBeforeUnmount(() => {
 .player__btnShuffle {
   display: flex;
   align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .player__btnShuffleSvg {
