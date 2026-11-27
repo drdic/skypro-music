@@ -49,12 +49,12 @@ export const usePlayerStore = defineStore('player', {
       return result
     },
 
-    currentIndex() {
-      return this.orderedPlaylist.findIndex((item) => item._id === this.currentTrack?._id)
+    currentIndex: (state) => {
+      return state.playlist.findIndex((item) => item._id === state.currentTrack?._id)
     },
 
     canNext() {
-      return this.currentIndex !== -1 && this.currentIndex < this.orderedPlaylist.length - 1
+      return this.currentIndex !== -1 && this.currentIndex < this.playlist.length - 1
     },
 
     canPrev() {
@@ -70,18 +70,7 @@ export const usePlayerStore = defineStore('player', {
       }
 
       const ids = this.playlist.map((track) => track._id)
-      const shuffled = shuffleIds(ids)
-      const currentId = this.currentTrack?._id
-
-      if (currentId) {
-        const index = shuffled.indexOf(currentId)
-        if (index > 0) {
-          shuffled.splice(index, 1)
-          shuffled.unshift(currentId)
-        }
-      }
-
-      this.shuffleOrder = shuffled
+      this.shuffleOrder = shuffleIds(ids)
     },
 
     setPlaylist(tracks) {
@@ -119,21 +108,38 @@ export const usePlayerStore = defineStore('player', {
 
     toggleShuffle() {
       this.isShuffled = !this.isShuffled
+      if (this.isShuffled) {
+        this.isLooping = false
+      }
       this.buildShuffleOrder()
     },
 
     toggleLoop() {
       this.isLooping = !this.isLooping
+      if (this.isLooping) {
+        this.isShuffled = false
+        this.buildShuffleOrder()
+      }
     },
 
     nextTrack() {
       if (!this.canNext) return null
-      return this.orderedPlaylist[this.currentIndex + 1]
+      return this.playlist[this.currentIndex + 1]
     },
 
     prevTrack() {
       if (!this.canPrev) return null
-      return this.orderedPlaylist[this.currentIndex - 1]
+      return this.playlist[this.currentIndex - 1]
+    },
+
+    autoNextTrack() {
+      if (!this.isShuffled) return this.nextTrack()
+
+      const order = this.orderedPlaylist
+      const index = order.findIndex((item) => item._id === this.currentTrack?._id)
+      if (index === -1 || index >= order.length - 1) return null
+
+      return order[index + 1]
     },
   },
 })

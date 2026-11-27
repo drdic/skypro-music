@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
               </svg>
             </button>
             <button
-              class="player__btnRepeat btnIcon"
+              class="player__btnRepeat"
               :class="{ player__btnRepeat_active: isLooping }"
               type="button"
               :aria-pressed="isLooping"
@@ -122,7 +122,7 @@ onBeforeUnmount(() => {
               </svg>
             </button>
             <button
-              class="player__btnShuffle btnIcon"
+              class="player__btnShuffle"
               :class="{ player__btnShuffle_active: isShuffled }"
               type="button"
               :aria-pressed="isShuffled"
@@ -322,19 +322,21 @@ onBeforeUnmount(() => {
 
 .player__btnRepeat:hover .player__btnRepeatSvg,
 .player__btnShuffle:hover .player__btnShuffleSvg {
-  stroke: var(--color-accent-hover);
+  fill: var(--color-icon-hover);
 }
 
-.player__btnRepeat_active .player__btnRepeatSvg,
-.player__btnShuffle_active .player__btnShuffleSvg {
-  stroke: var(--color-accent);
+.player__btnRepeat.player__btnRepeat_active .player__btnRepeatSvg,
+.player__btnShuffle.player__btnShuffle_active .player__btnShuffleSvg,
+.player__btnRepeat.player__btnRepeat_active:hover .player__btnRepeatSvg,
+.player__btnShuffle.player__btnShuffle_active:hover .player__btnShuffleSvg {
+  fill: var(--color-accent);
 }
 
 .player__btnRepeatSvg {
   width: 18px;
   height: 12px;
-  fill: transparent;
-  stroke: var(--color-text-secondary);
+  fill: var(--color-text-secondary);
+  stroke: none;
 }
 
 .player__btnShuffle {
@@ -348,8 +350,8 @@ onBeforeUnmount(() => {
 .player__btnShuffleSvg {
   width: 19px;
   height: 12px;
-  fill: transparent;
-  stroke: var(--color-text-secondary);
+  fill: var(--color-text-secondary);
+  stroke: none;
 }
 
 .player__trackPlay {

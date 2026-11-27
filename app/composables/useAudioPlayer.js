@@ -88,7 +88,7 @@ export function useAudioPlayer() {
       return
     }
 
-    const next = playerStore.nextTrack()
+    const next = playerStore.autoNextTrack()
     if (next) {
       playTrack(next)
       return
