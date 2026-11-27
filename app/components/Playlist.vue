@@ -1,7 +1,7 @@
 <script setup>
 import { publicPath } from '~/utils/publicPath.js'
 
-defineProps({
+const props = defineProps({
   tracks: {
     type: Array,
     required: true,
@@ -14,9 +14,17 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  favoriteIds: {
+    type: Array,
+    default: () => [],
+  },
 })
 
-const emit = defineEmits(['select'])
+const emit = defineEmits(['select', 'toggle-favorite'])
+
+function isFavorite(trackId) {
+  return props.favoriteIds.includes(trackId)
+}
 </script>
 
 <template>
@@ -38,7 +46,9 @@ const emit = defineEmits(['select'])
         :track="track"
         :is-active="track._id === activeTrackId"
         :is-playing="isPlaying && track._id === activeTrackId"
+        :is-favorite="isFavorite(track._id)"
         @select="emit('select', $event)"
+        @toggle-favorite="emit('toggle-favorite', $event)"
       />
     </div>
   </div>

@@ -1,18 +1,39 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+import { useTheme } from '~/composables/useTheme.js'
+import { useAuthStore } from '~/stores/auth.js'
+
 const { isLight, toggleTheme } = useTheme()
+const authStore = useAuthStore()
+const router = useRouter()
 
 const isMenuOpen = ref(false)
+const isMounted = ref(false)
+
+onMounted(() => {
+  isMounted.value = true
+})
+
+function handleLogout() {
+  authStore.logout()
+  isMenuOpen.value = false
+  router.push('/login')
+}
+
+function closeMenu() {
+  isMenuOpen.value = false
+}
 </script>
 
 <template>
   <nav class="main__nav">
-    <div class="nav__logo">
+    <NuxtLink class="nav__logo" to="/" aria-label="На главную">
       <svg class="logo__icon" viewBox="0 0 26 18" aria-hidden="true">
         <path d="M0 0 L14 9 L0 18 Z" fill="#21bfef" />
         <path d="M10 0 L24 9 L10 18 Z" fill="#b8e62e" />
       </svg>
       <span class="logo__text">skypro.music</span>
-    </div>
+    </NuxtLink>
     <button
       class="nav__burger"
       :class="{ nav__burger_open: isMenuOpen }"
@@ -28,13 +49,18 @@ const isMenuOpen = ref(false)
     <div v-show="isMenuOpen" class="nav__menu">
       <ul class="menu__list">
         <li class="menu__item">
-          <a href="#" class="menu__link">Главное</a>
+          <NuxtLink class="menu__link" to="/" @click="closeMenu">Главное</NuxtLink>
         </li>
         <li class="menu__item">
-          <a href="#" class="menu__link">Мои треки</a>
+          <NuxtLink class="menu__link" to="/favorites" @click="closeMenu">Мои треки</NuxtLink>
         </li>
-        <li class="menu__item">
-          <a href="#" class="menu__link">Выйти</a>
+        <li v-if="!isMounted || !authStore.isAuthorized" class="menu__item">
+          <NuxtLink class="menu__link" to="/login" @click="closeMenu">Войти</NuxtLink>
+        </li>
+        <li v-else class="menu__item">
+          <button class="menu__link menu__link_button" type="button" @click="handleLogout">
+            Выйти
+          </button>
         </li>
         <li class="menu__item">
           <button class="menu__theme" type="button" @click="toggleTheme">
@@ -55,11 +81,14 @@ const isMenuOpen = ref(false)
 }
 
 .nav__logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding: 13px 0;
   background-color: transparent;
   margin-bottom: 20px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .logo__icon {
@@ -87,18 +116,25 @@ const isMenuOpen = ref(false)
   justify-content: space-between;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
 .nav__burger_open {
   justify-content: center;
-  gap: 6px;
+  gap: 3px;
 }
 
 .burger__line {
-  display: inline-block;
+  display: block;
+  flex: 0 0 1px;
   width: 100%;
   height: 1px;
   background-color: var(--color-burger);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.nav__burger:hover .burger__line {
+  background-color: var(--color-accent);
 }
 
 .nav__menu {
@@ -122,7 +158,19 @@ const isMenuOpen = ref(false)
   transition: color 0.2s ease-in-out;
 }
 
+.menu__link_button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+}
+
 .menu__link:hover {
+  color: var(--color-accent);
+}
+
+.menu__link.router-link-active {
   color: var(--color-accent);
 }
 
