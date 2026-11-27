@@ -53,13 +53,9 @@ export const usePlayerStore = defineStore('player', {
       return state.playlist.findIndex((item) => item._id === state.currentTrack?._id)
     },
 
-    canNext() {
-      return this.currentIndex !== -1 && this.currentIndex < this.playlist.length - 1
-    },
+    canNext: (state) => state.playlist.length > 0,
 
-    canPrev() {
-      return this.currentIndex > 0
-    },
+    canPrev: (state) => state.playlist.length > 0,
   },
 
   actions: {
@@ -123,23 +119,32 @@ export const usePlayerStore = defineStore('player', {
     },
 
     nextTrack() {
-      if (!this.canNext) return null
-      return this.playlist[this.currentIndex + 1]
+      if (!this.playlist.length) return null
+
+      if (this.currentIndex === -1) return this.playlist[0]
+      if (this.currentIndex < this.playlist.length - 1) {
+        return this.playlist[this.currentIndex + 1]
+      }
+
+      return this.playlist[0]
     },
 
     prevTrack() {
-      if (!this.canPrev) return null
+      if (!this.playlist.length) return null
+
+      if (this.currentIndex <= 0) return this.playlist[this.playlist.length - 1]
       return this.playlist[this.currentIndex - 1]
     },
 
     autoNextTrack() {
-      if (!this.isShuffled) return this.nextTrack()
+      const order = this.isShuffled ? this.orderedPlaylist : this.playlist
+      if (!order.length) return null
 
-      const order = this.orderedPlaylist
       const index = order.findIndex((item) => item._id === this.currentTrack?._id)
-      if (index === -1 || index >= order.length - 1) return null
+      if (index === -1) return null
+      if (index < order.length - 1) return order[index + 1]
 
-      return order[index + 1]
+      return order[0]
     },
   },
 })
