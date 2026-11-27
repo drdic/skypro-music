@@ -1,0 +1,1 @@
+import{c as e,u as t}from"./CYYUlMeB.js";import{t as n}from"./CaeQsuEu.js";var r=e(()=>{let e=n();if(e.access||e.init(),!e.isAuthorized)return t(`/login`)});export{r as default};

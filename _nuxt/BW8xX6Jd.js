@@ -1,1 +1,0 @@
-import{c as e,u as t}from"./Ch259L1B.js";import{t as n}from"./CNcZ68xe.js";var r=e(()=>{let e=n();if(e.access||e.init(),!e.isAuthorized)return t(`/login`)});export{r as default};

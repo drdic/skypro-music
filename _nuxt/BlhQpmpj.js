@@ -1,1 +1,0 @@
-function e(e){return`${`/skypro-music/`.replace(/\/+$/,``)}/${e.replace(/^\//,``)}`}export{e as t};
