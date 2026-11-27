@@ -81,8 +81,20 @@ export function useAudioPlayer() {
 
   function handleEnded() {
     stopProgressLoop()
-    playerStore.setPlaying(false)
     playerStore.setProgress(100)
+
+    if (playerStore.isLooping && playerStore.currentTrack) {
+      restartTrack()
+      return
+    }
+
+    const next = playerStore.nextTrack()
+    if (next) {
+      playTrack(next)
+      return
+    }
+
+    playerStore.setPlaying(false)
   }
 
   function handleError() {
@@ -390,29 +402,32 @@ export function useAudioPlayer() {
     audio.volume = playerStore.volume / 100
   })
 
-  function getPlaylistIndex() {
-    const playlist = playerStore.playlist
-    return playlist.findIndex((item) => item._id === playerStore.currentTrack?._id)
-  }
+  function restartTrack() {
+    const track = playerStore.currentTrack
+    const audio = getAudio()
+    if (!track || !audio) return
 
-  function playPlaylistTrack(index) {
-    const playlist = playerStore.playlist
-    if (!playlist.length) return
+    playerStore.setProgress(0)
+    playerStore.setTime(0, trackDuration())
 
-    const normalized = (index + playlist.length) % playlist.length
-    playTrack(playlist[normalized])
+    if (typeof MediaSource === 'undefined' || !MediaSource.isTypeSupported('audio/mpeg')) {
+      audio.currentTime = 0
+      play()
+      return
+    }
+
+    playerStore.setPlaying(true)
+    loadStream(track)
   }
 
   function nextTrack() {
-    const index = getPlaylistIndex()
-    if (index === -1) return
-    playPlaylistTrack(index + 1)
+    const next = playerStore.nextTrack()
+    if (next) playTrack(next)
   }
 
   function prevTrack() {
-    const index = getPlaylistIndex()
-    if (index === -1) return
-    playPlaylistTrack(index - 1)
+    const previous = playerStore.prevTrack()
+    if (previous) playTrack(previous)
   }
 
   return {

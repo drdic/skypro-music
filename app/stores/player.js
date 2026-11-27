@@ -1,9 +1,25 @@
 import { defineStore } from 'pinia'
 
+function shuffleIds(ids) {
+  const result = [...ids]
+
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    const buffer = result[index]
+    result[index] = result[randomIndex]
+    result[randomIndex] = buffer
+  }
+
+  return result
+}
+
 export const usePlayerStore = defineStore('player', {
   state: () => ({
     currentTrack: null,
     playlist: [],
+    shuffleOrder: [],
+    isShuffled: false,
+    isLooping: false,
     isPlaying: false,
     progress: 0,
     currentTime: 0,
@@ -14,11 +30,63 @@ export const usePlayerStore = defineStore('player', {
   getters: {
     hasCurrentTrack: (state) => Boolean(state.currentTrack),
     isCurrentTrackPlaying: (state) => Boolean(state.currentTrack) && state.isPlaying,
+
+    orderedPlaylist: (state) => {
+      if (!state.isShuffled || !state.shuffleOrder.length) return state.playlist
+
+      const byId = new Map(state.playlist.map((track) => [track._id, track]))
+      const result = []
+
+      state.shuffleOrder.forEach((id) => {
+        const track = byId.get(id)
+        if (track) result.push(track)
+      })
+
+      state.playlist.forEach((track) => {
+        if (!result.some((item) => item._id === track._id)) result.push(track)
+      })
+
+      return result
+    },
+
+    currentIndex() {
+      return this.orderedPlaylist.findIndex((item) => item._id === this.currentTrack?._id)
+    },
+
+    canNext() {
+      return this.currentIndex !== -1 && this.currentIndex < this.orderedPlaylist.length - 1
+    },
+
+    canPrev() {
+      return this.currentIndex > 0
+    },
   },
 
   actions: {
+    buildShuffleOrder() {
+      if (!this.isShuffled) {
+        this.shuffleOrder = []
+        return
+      }
+
+      const ids = this.playlist.map((track) => track._id)
+      const shuffled = shuffleIds(ids)
+      const currentId = this.currentTrack?._id
+
+      if (currentId) {
+        const index = shuffled.indexOf(currentId)
+        if (index > 0) {
+          shuffled.splice(index, 1)
+          shuffled.unshift(currentId)
+        }
+      }
+
+      this.shuffleOrder = shuffled
+    },
+
     setPlaylist(tracks) {
-      this.playlist = Array.isArray(tracks) ? tracks : []
+      this.playlist = Array.isArray(tracks) ? [...tracks] : []
+      this.buildShuffleOrder()
     },
 
     setCurrentTrack(track) {
@@ -47,6 +115,25 @@ export const usePlayerStore = defineStore('player', {
     setVolume(value) {
       const volume = Number(value)
       this.volume = Number.isFinite(volume) ? Math.min(100, Math.max(0, volume)) : 0
+    },
+
+    toggleShuffle() {
+      this.isShuffled = !this.isShuffled
+      this.buildShuffleOrder()
+    },
+
+    toggleLoop() {
+      this.isLooping = !this.isLooping
+    },
+
+    nextTrack() {
+      if (!this.canNext) return null
+      return this.orderedPlaylist[this.currentIndex + 1]
+    },
+
+    prevTrack() {
+      if (!this.canPrev) return null
+      return this.orderedPlaylist[this.currentIndex - 1]
     },
   },
 })
