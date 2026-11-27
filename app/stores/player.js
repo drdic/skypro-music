@@ -53,9 +53,13 @@ export const usePlayerStore = defineStore('player', {
       return state.playlist.findIndex((item) => item._id === state.currentTrack?._id)
     },
 
-    canNext: (state) => state.playlist.length > 0,
+    canNext() {
+      return this.currentIndex !== -1 && this.currentIndex < this.playlist.length - 1
+    },
 
-    canPrev: (state) => state.playlist.length > 0,
+    canPrev() {
+      return this.currentIndex > 0
+    },
   },
 
   actions: {
@@ -119,20 +123,12 @@ export const usePlayerStore = defineStore('player', {
     },
 
     nextTrack() {
-      if (!this.playlist.length) return null
-
-      if (this.currentIndex === -1) return this.playlist[0]
-      if (this.currentIndex < this.playlist.length - 1) {
-        return this.playlist[this.currentIndex + 1]
-      }
-
-      return this.playlist[0]
+      if (!this.canNext) return null
+      return this.playlist[this.currentIndex + 1]
     },
 
     prevTrack() {
-      if (!this.playlist.length) return null
-
-      if (this.currentIndex <= 0) return this.playlist[this.playlist.length - 1]
+      if (!this.canPrev) return null
       return this.playlist[this.currentIndex - 1]
     },
 
