@@ -2,12 +2,25 @@
 const rawBaseURL = (process.env.NUXT_APP_BASE_URL || '/').trim()
 const baseURL = rawBaseURL === '/' ? '/' : `${rawBaseURL.replace(/\/+$/, '')}/`
 
+const imageProvider = process.env.NODE_ENV === 'production' ? 'ipxStatic' : 'ipx'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
   telemetry: false,
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxt/image'],
   css: ['~/assets/theme.css', '~/assets/main.css'],
+  image: {
+    provider: imageProvider,
+    quality: 80,
+    format: ['webp'],
+    screens: {
+      sm: 320,
+      md: 640,
+      lg: 1024,
+      xl: 1280,
+    },
+  },
   nitro: {
     prerender: {
       crawlLinks: false,

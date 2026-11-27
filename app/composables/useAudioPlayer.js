@@ -7,6 +7,12 @@ const CHUNK_SIZE = 256 * 1024
 const CHUNK_ATTEMPTS = 4
 const HEADER_TIMEOUT = 5000
 
+function canStream() {
+  if (typeof MediaSource === 'undefined' || typeof navigator === 'undefined') return false
+  if (/firefox/i.test(navigator.userAgent)) return false
+  return MediaSource.isTypeSupported('audio/mpeg')
+}
+
 let frameId = null
 let streamToken = 0
 let mediaSource = null
@@ -81,8 +87,20 @@ export function useAudioPlayer() {
 
   function handleEnded() {
     stopProgressLoop()
-    playerStore.setPlaying(false)
     playerStore.setProgress(100)
+
+    if (playerStore.isLooping && playerStore.currentTrack) {
+      restartTrack()
+      return
+    }
+
+    const next = playerStore.autoNextTrack()
+    if (next) {
+      playTrack(next)
+      return
+    }
+
+    playerStore.setPlaying(false)
   }
 
   function handleError() {
@@ -203,7 +221,7 @@ export function useAudioPlayer() {
         const buffer = await response.arrayBuffer()
 
         if (token !== streamToken) return null
-        return new Uint8Array(buffer)
+        return { bytes: new Uint8Array(buffer), whole: response.status === 200 }
       } catch {
         clearTimeout(timer)
         if (token !== streamToken) return null
@@ -236,10 +254,10 @@ export function useAudioPlayer() {
 
     let index = 0
     for (;;) {
-      const chunk = await requestChunk(track.track_file, index, token)
+      const result = await requestChunk(track.track_file, index, token)
       if (token !== streamToken) return
 
-      if (!chunk) {
+      if (!result) {
         if (token === streamToken) {
           wantPlay = false
           playerStore.setPlaying(false)
@@ -247,11 +265,11 @@ export function useAudioPlayer() {
         return
       }
 
-      chunkQueue.push(chunk)
+      chunkQueue.push(result.bytes)
       appendNext()
       index += 1
 
-      if (chunk.byteLength < CHUNK_SIZE) break
+      if (result.whole || result.bytes.byteLength < CHUNK_SIZE) break
     }
 
     finished = true
@@ -263,6 +281,8 @@ export function useAudioPlayer() {
     if (!audio) return
 
     stopStream()
+    wantPlay = true
+    started = true
     audio.src = track.track_file
     audio.play().then(handlePlaying, () => playerStore.setPlaying(false))
   }
@@ -337,7 +357,7 @@ export function useAudioPlayer() {
     playerStore.setCurrentTrack(track)
     playerStore.setProgress(0)
 
-    if (typeof MediaSource === 'undefined' || !MediaSource.isTypeSupported('audio/mpeg')) {
+    if (!canStream()) {
       fallbackToSource(track)
       return
     }
@@ -350,10 +370,10 @@ export function useAudioPlayer() {
     const audio = getAudio()
     if (!audio) return
 
-    if (audio.paused) {
-      play()
-    } else {
+    if (playerStore.isPlaying) {
       pause()
+    } else {
+      play()
     }
   }
 
@@ -390,29 +410,43 @@ export function useAudioPlayer() {
     audio.volume = playerStore.volume / 100
   })
 
-  function getPlaylistIndex() {
-    const playlist = playerStore.playlist
-    return playlist.findIndex((item) => item._id === playerStore.currentTrack?._id)
-  }
+  function restartTrack() {
+    const track = playerStore.currentTrack
+    const audio = getAudio()
+    if (!track || !audio) return
 
-  function playPlaylistTrack(index) {
-    const playlist = playerStore.playlist
-    if (!playlist.length) return
+    playerStore.setProgress(0)
+    playerStore.setTime(0, trackDuration())
 
-    const normalized = (index + playlist.length) % playlist.length
-    playTrack(playlist[normalized])
+    if (started && finished) {
+      audio.currentTime = 0
+      play()
+      return
+    }
+
+    if (!canStream()) {
+      if (audio.src && !audio.src.startsWith('blob:')) {
+        audio.currentTime = 0
+        play()
+        return
+      }
+
+      fallbackToSource(track)
+      return
+    }
+
+    playerStore.setPlaying(true)
+    loadStream(track)
   }
 
   function nextTrack() {
-    const index = getPlaylistIndex()
-    if (index === -1) return
-    playPlaylistTrack(index + 1)
+    const next = playerStore.nextTrack()
+    if (next) playTrack(next)
   }
 
   function prevTrack() {
-    const index = getPlaylistIndex()
-    if (index === -1) return
-    playPlaylistTrack(index - 1)
+    const previous = playerStore.prevTrack()
+    if (previous) playTrack(previous)
   }
 
   return {

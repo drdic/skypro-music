@@ -1,6 +1,5 @@
 <script setup>
 import { computed, reactive } from 'vue'
-import { publicPath } from '~/utils/publicPath.js'
 
 const props = defineProps({
   mode: {
@@ -44,7 +43,14 @@ function handleSubmit() {
   <div class="modal__block">
     <form class="modal__form" novalidate @submit.prevent="handleSubmit">
       <NuxtLink class="modal__logo" to="/">
-        <img :src="publicPath('img/logo_modal.png')" alt="logo" />
+        <NuxtImg
+          src="/img/logo_modal.png"
+          alt="Логотип Skypro.Music"
+          width="140"
+          height="21"
+          format="webp"
+          :placeholder="[140, 21, 10]"
+        />
       </NuxtLink>
 
       <input
