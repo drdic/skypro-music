@@ -10,9 +10,9 @@ const catalogStore = useCatalogStore()
 const isMounted = ref(false)
 
 const PLAYLIST_COVERS = {
-  'Плейлист дня': 'img/playlist01.png',
-  'Танцевальные хиты': 'img/playlist02.png',
-  'Инди-заряд': 'img/playlist03.png',
+  'Плейлист дня': '/img/playlist01.png',
+  'Танцевальные хиты': '/img/playlist02.png',
+  'Инди-заряд': '/img/playlist03.png',
 }
 
 const collections = computed(() => {
@@ -21,7 +21,7 @@ const collections = computed(() => {
 })
 
 function playlistCover(collection, index) {
-  return PLAYLIST_COVERS[collection.name] || `img/playlist0${index + 1}.png`
+  return PLAYLIST_COVERS[collection.name] || `/img/playlist0${index + 1}.png`
 }
 
 const showAuthorized = computed(() => isMounted.value && authStore.isAuthorized)
@@ -50,24 +50,30 @@ onMounted(() => {
       <div class="sidebar__list">
         <div v-for="(collection, index) in collections" :key="collection._id" class="sidebar__item">
           <NuxtLink class="sidebar__link" :to="`/category/${collection._id}`">
-            <img
+            <NuxtImg
               class="sidebar__img"
-              :src="publicPath(playlistCover(collection, index))"
+              :src="playlistCover(collection, index)"
               :alt="collection.name"
               :aria-label="collection.name"
               width="250"
               height="170"
+              format="webp"
+              loading="lazy"
+              :placeholder="[250, 170, 10]"
             />
           </NuxtLink>
         </div>
         <div v-if="!collections.length" class="sidebar__list_empty">
           <div v-for="index in 3" :key="index" class="sidebar__item">
-            <img
+            <NuxtImg
               class="sidebar__img"
-              :src="publicPath(`img/playlist0${index}.png`)"
+              :src="`/img/playlist0${index}.png`"
               alt="Подборка"
               width="250"
               height="170"
+              format="webp"
+              loading="lazy"
+              :placeholder="[250, 170, 10]"
             />
           </div>
         </div>
